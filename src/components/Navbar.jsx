@@ -1,7 +1,8 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
-import { TbFileCvFilled } from "react-icons/tb";
 import NavLink from "./NavLink";
 import MobileMenu from "./MobileMenu";
 
@@ -19,11 +20,11 @@ const Navbar = () => {
     { label: "Contact", id: "contact" },
   ];
 
+  // Scroll position and active section
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
 
-      // পেজের একদম নিচে পৌঁছালে Contact active হবে
       const isAtBottom =
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 5;
@@ -39,45 +40,72 @@ const Navbar = () => {
       for (const item of navItems) {
         const element = document.getElementById(item.id);
 
-        if (element && element.offsetTop <= scrollPosition) {
+        if (element && element.getBoundingClientRect().top + window.scrollY <= scrollPosition) {
           currentSection = item.id;
         }
       }
 
       setActiveSection(currentSection);
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
     handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
     };
   }, []);
 
-  const handleHomeClick = (e) => {
+  // Navigate to a section without changing the URL hash
+  const handleSectionClick = (e, sectionId) => {
     e.preventDefault();
 
-    const homeSection = document.getElementById("home");
+    const section = document.getElementById(sectionId);
 
-    homeSection?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
 
-    // URL-এ #home যোগ হবে না
-    window.history.replaceState(null, "", window.location.pathname);
+    // Remove #section from the URL
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search
+    );
 
-    setActiveSection("home");
+    setActiveSection(sectionId);
     setIsMobileMenuOpen(false);
   };
+
+  // Close mobile menu with Escape
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <header
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
-        isScrolled ? "bg-[#08050d]/80 backdrop-blur-xl" : "bg-transparent"
+        isScrolled
+          ? "bg-[#08050d]/90 shadow-lg shadow-black/10 backdrop-blur-xl"
+          : "bg-transparent"
       }`}
     >
-      {/* Subtle bottom border */}
+      {/* Bottom border */}
       <div
         className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-500 ${
           isScrolled
@@ -86,17 +114,17 @@ const Navbar = () => {
         }`}
       />
 
-      <nav className="mx-auto flex h-[76px] max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
+      <nav className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-4 sm:h-[76px] sm:px-8 lg:px-10">
         {/* Logo */}
         <a
           href="#home"
-          onClick={handleHomeClick}
-          className="group flex items-center gap-3"
+          onClick={(e) => handleSectionClick(e, "home")}
+          aria-label="Go to home section"
+          className="group flex shrink-0 items-center gap-3"
         >
-          <div className="hidden sm:block">
-            <p className="text-[17px] font-semibold tracking-tight text-white">
-              Fuad
-              <span className="text-purple-400">.</span>
+          <div>
+            <p className="text-base font-semibold tracking-tight text-white sm:text-[17px]">
+              Fuad<span className="text-purple-400">.</span>
             </p>
 
             <p className="text-[9px] uppercase tracking-[0.25em] text-slate-500">
@@ -106,26 +134,36 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 lg:flex">
+        <div className="hidden items-center gap-5 lg:flex xl:gap-8">
           {navItems.map((item) => (
-            <NavLink
+            <a
               key={item.id}
               href={`#${item.id}`}
-              label={item.label}
-              isActive={activeSection === item.id}
-            />
+              onClick={(e) => handleSectionClick(e, item.id)}
+              className={`relative py-2 text-sm font-medium transition-colors duration-300 ${
+                activeSection === item.id
+                  ? "text-purple-300"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              {item.label}
+
+              {activeSection === item.id && (
+                <span className="absolute -bottom-0.5 left-0 h-0.5 w-full rounded-full bg-purple-400" />
+              )}
+            </a>
           ))}
         </div>
 
         {/* Right Side */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-3">
           {/* GitHub */}
           <a
             href="https://github.com/FuadAlMaimun-1"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            className="hidden rounded-full p-2.5 text-slate-500 transition-all duration-300 hover:bg-purple-500/10 hover:text-purple-300 sm:block"
+            className="hidden rounded-full p-2.5 text-slate-400 transition hover:bg-purple-500/10 hover:text-purple-300 sm:inline-flex"
           >
             <FaGithub size={19} />
           </a>
@@ -136,7 +174,7 @@ const Navbar = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="hidden rounded-full p-2.5 text-slate-500 transition-all duration-300 hover:bg-purple-500/10 hover:text-purple-300 sm:block"
+            className="hidden rounded-full p-2.5 text-slate-400 transition hover:bg-purple-500/10 hover:text-purple-300 sm:inline-flex"
           >
             <FaLinkedin size={19} />
           </a>
@@ -147,47 +185,38 @@ const Navbar = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"
-            className="hidden rounded-full p-2.5 text-slate-500 transition-all duration-300 hover:bg-purple-500/10 hover:text-purple-300 sm:block"
+            className="hidden rounded-full p-2.5 text-slate-400 transition hover:bg-purple-500/10 hover:text-purple-300 sm:inline-flex"
           >
             <FaWhatsapp size={19} />
           </a>
 
-          {/* Divider */}
           <div className="mx-1 hidden h-5 w-px bg-white/10 sm:block" />
-
-          {/* CV Download */}
-          <a
-            href="/Fuad_Al_Maimun_CV.pdf"
-            download="Fuad_Al_Maimun_CV.pdf"
-            aria-label="Download CV"
-            title="Download CV"
-            className="rounded-full p-2 text-slate-500 transition-all duration-300 hover:bg-purple-500/10 hover:text-purple-300"
-          >
-            <TbFileCvFilled size={19} />
-          </a>
 
           {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsMobileMenuOpen((previous) => !previous)}
+            type="button"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             aria-label={
               isMobileMenuOpen
                 ? "Close navigation menu"
                 : "Open navigation menu"
             }
             aria-expanded={isMobileMenuOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-300 transition-all duration-300 hover:border-purple-400/30 hover:bg-purple-500/10 hover:text-white lg:hidden"
+            aria-controls="mobile-navigation"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-300 transition hover:border-purple-400/30 hover:bg-purple-500/10 hover:text-white lg:hidden"
           >
             {isMobileMenuOpen ? <X size={21} /> : <Menu size={21} />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Navigation */}
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeSection={activeSection}
         navItems={navItems}
+        onSectionClick={handleSectionClick}
       />
     </header>
   );

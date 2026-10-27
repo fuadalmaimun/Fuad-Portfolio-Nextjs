@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import ScrollSequence from "./ScrollSequence";
 import { FRAME_SEQUENCES } from "../data/frames";
+import CVPreview from "@/components/CVPreview";
 
 const TEXTS = [
   "Fuad Al Maimun",
@@ -19,41 +20,49 @@ const Hero = () => {
   const [textIndex, setTextIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const scrollHintRef = React.useRef(null);
+  const scrollHintRef = useRef(null);
 
   useEffect(() => {
     setIsLoaded(true);
+  }, []);
 
+  // Typing animation
+  useEffect(() => {
     const currentText = TEXTS[textIndex];
-    const typingSpeed = isDeleting ? 45 : 110;
+    let timer;
 
-    const timer = setTimeout(() => {
-      if (!isDeleting) {
-        const nextText = currentText.slice(0, displayText.length + 1);
-        setDisplayText(nextText);
-
-        if (nextText === currentText) {
-          setTimeout(() => setIsDeleting(true), 2200);
-        }
-      } else {
-        const nextText = currentText.slice(0, displayText.length - 1);
-        setDisplayText(nextText);
-
-        if (nextText === "") {
-          setIsDeleting(false);
-          setTextIndex((prev) => (prev + 1) % TEXTS.length);
-        }
-      }
-    }, typingSpeed);
+    if (!isDeleting && displayText === currentText) {
+      timer = setTimeout(() => {
+        setIsDeleting(true);
+      }, 1800);
+    } else if (isDeleting && displayText === "") {
+      setIsDeleting(false);
+      setTextIndex((prev) => (prev + 1) % TEXTS.length);
+    } else {
+      timer = setTimeout(
+        () => {
+          setDisplayText(
+            isDeleting
+              ? currentText.slice(0, displayText.length - 1)
+              : currentText.slice(0, displayText.length + 1)
+          );
+        },
+        isDeleting ? 45 : 100
+      );
+    }
 
     return () => clearTimeout(timer);
   }, [displayText, isDeleting, textIndex]);
 
-  const scrollToContact = () => {
-    const contactEl = document.getElementById("contact");
+  // Scroll to projects
+  const scrollToProjects = () => {
+    const projectsEl = document.getElementById("projects");
 
-    if (contactEl) {
-      contactEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (projectsEl) {
+      projectsEl.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     } else {
       window.scrollTo({
         top: document.documentElement.scrollHeight,
@@ -62,11 +71,12 @@ const Hero = () => {
     }
   };
 
+  // Scroll hint animation
   const handleProgress = (progress) => {
-    const hint = scrollHintRef.current;
-
-    if (hint) {
-      hint.style.opacity = String(Math.max(0, 1 - progress * 14));
+    if (scrollHintRef.current) {
+      scrollHintRef.current.style.opacity = String(
+        Math.max(0, 1 - progress * 14)
+      );
     }
   };
 
@@ -78,7 +88,7 @@ const Hero = () => {
       basePath={FRAME_SEQUENCES.about.basePath}
       count={FRAME_SEQUENCES.about.count}
       scrollLength="300vh"
-      className="bg-[#08050d] text-white"
+      className="overflow-x-clip bg-[#08050d] text-white"
       wrapperClassName="bg-[#08050d] text-white"
       overlayClassName="bg-gradient-to-r from-[#08050d] via-[#08050d]/85 to-[#08050d]/40"
       canvasFilter="saturate(1.4) contrast(1.05) brightness(1.05)"
@@ -86,141 +96,48 @@ const Hero = () => {
     >
       {/* Background Glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-1/4 h-[320px] w-[320px] rounded-full bg-purple-700/20 blur-[120px] sm:h-[480px] sm:w-[480px]" />
-        <div className="absolute -right-24 top-10 h-[340px] w-[340px] rounded-full bg-violet-600/20 blur-[130px] sm:h-[520px] sm:w-[520px]" />
-        <div className="absolute bottom-[-15%] left-1/3 h-[300px] w-[300px] rounded-full bg-fuchsia-600/10 blur-[130px] sm:h-[420px] sm:w-[420px]" />
+        <div className="absolute -left-20 top-1/4 h-56 w-56 rounded-full bg-purple-700/20 blur-[90px] sm:h-80 sm:w-80 lg:h-[480px] lg:w-[480px]" />
+
+        <div className="absolute -right-20 top-10 h-60 w-60 rounded-full bg-violet-600/20 blur-[100px] sm:h-80 sm:w-80 lg:h-[520px] lg:w-[520px]" />
+
+        <div className="absolute bottom-[-10%] left-1/3 h-56 w-56 rounded-full bg-fuchsia-600/10 blur-[100px] sm:h-80 sm:w-80" />
 
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage:
               "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "64px 64px",
+            backgroundSize:
+              "clamp(32px, 5vw, 64px) clamp(32px, 5vw, 64px)",
           }}
         />
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-center px-5 pb-24 pt-28 sm:px-8 sm:pb-28 lg:px-12">
-        <div className="grid w-full items-center gap-12 sm:gap-14 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-          {/* Left Side */}
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-center px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 md:px-8 lg:px-12 lg:py-20">
+        <div className="grid w-full grid-cols-1 items-center gap-6 sm:gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10 xl:gap-16">
+
+          {/* Right Side / Profile
+              Mobile: First
+              Desktop: Right */}
           <div
-            className={`transition-all duration-1000 ${
-              isLoaded ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+            className={`relative order-1 flex min-w-0 justify-center transition-all delay-200 duration-1000 lg:order-2 lg:justify-end ${
+              isLoaded
+                ? "translate-x-0 opacity-100"
+                : "translate-x-8 opacity-0"
             }`}
           >
-            {/* Intro */}
-            {/* Intro */}
-            <div className="mb-5 flex items-center gap-3 sm:mb-6 lg:mb-7">
-              <span className="h-px w-8 bg-purple-500 sm:w-10" />
-              <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-purple-300 sm:text-xs sm:tracking-[0.25em]">
-                Welcome to my portfolio
-              </span>
-            </div>
-
-            {/* Heading */}
-            <div className="flex flex-col">
-              <span className="mb-1 text-base font-medium text-slate-300 sm:mb-1.5 sm:text-lg lg:mb-2 lg:text-2xl">
-                Hi, I&apos;m
-              </span>
-
-              <h1 className="min-h-[3.2rem] text-3xl font-bold leading-[1.1] tracking-tight sm:min-h-[4.4rem] sm:text-5xl lg:min-h-[5.6rem] lg:text-6xl">
-                <span
-                  className={`inline-block bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent transition-all duration-300 ${
-                    isName
-                      ? "text-3xl sm:text-5xl lg:text-6xl"
-                      : "text-2xl sm:text-3xl lg:text-4xl"
-                  }`}
-                >
-                  {displayText}
-                  <span className="ml-1 inline-block h-[0.85em] w-[3px] translate-y-[2px] animate-pulse rounded-full bg-fuchsia-400 align-middle" />
-                </span>
-              </h1>
-            </div>
-
-            {/* Description */}
-            <p className="mt-0.5 max-w-xl text-sm leading-7 text-slate-400 sm:mt-1 sm:text-base sm:leading-8 lg:mt-1.5">
-              I specialize in crafting high-performance, modern web applications
-              using React, Next.js, TypeScript, and clean architecture.
-            </p>
-            {/* Buttons */}
-            <div className="mt-8 flex flex-col gap-3.5 sm:mt-10 sm:flex-row sm:items-center">
-              <button
-                onClick={scrollToContact}
-                className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-600/40 sm:text-base"
-              >
-                Let&apos;s Work Together
-                <ArrowUpRight
-                  size={18}
-                  className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
-              </button>
-
-              <a
-                href="/Fuad_Al_Maimun_CV.pdf"
-                download="Fuad_Al_Maimun_CV.pdf"
-                className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-purple-500/30 bg-purple-950/30 px-6 py-3.5 text-sm font-medium text-purple-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/60 hover:bg-purple-600/20 hover:text-white sm:text-base"
-              >
-                Download CV
-                <ArrowUpRight
-                  size={17}
-                  className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
-              </a>
-            </div>
-
-            {/* Social Links */}
-            <div className="mt-9 flex items-center gap-3 sm:mt-11">
-              <span className="mr-1 text-xs text-slate-500 sm:text-sm">
-                Connect with me
-              </span>
-
-              <a
-                href="https://github.com/fuadalmaimun"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub"
-                className="rounded-full border border-white/10 bg-white/[0.03] p-3 text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-300"
-              >
-                <FaGithub size={18} />
-              </a>
-
-              <a
-                href="https://www.linkedin.com/in/fuad-al-maimun-97ba42399/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="rounded-full border border-white/10 bg-white/[0.03] p-3 text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-300"
-              >
-                <FaLinkedin size={18} />
-              </a>
-
-              <a
-                href="mailto:fuadmaymun0@gmail.com"
-                aria-label="Email"
-                className="rounded-full border border-white/10 bg-white/[0.03] p-3 text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-300"
-              >
-                <Mail size={18} />
-              </a>
-            </div>
-          </div>
-
-          {/* Right Side / Profile */}
-          <div
-            className={`relative flex justify-center transition-all delay-200 duration-1000 lg:justify-end ${
-              isLoaded ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
-            }`}
-          >
-            <div className="relative flex h-[260px] w-[260px] items-center justify-center sm:h-[360px] sm:w-[360px] lg:h-[420px] lg:w-[420px]">
+            <div className="relative flex aspect-square w-full max-w-[190px] items-center justify-center xs:max-w-[220px] sm:max-w-[290px] md:max-w-[340px] lg:max-w-[380px] xl:max-w-[420px]">
               {/* Outer Glow */}
-              <div className="absolute inset-0 rounded-full bg-purple-600/20 blur-[90px]" />
+              <div className="absolute inset-0 rounded-full bg-purple-600/20 blur-[60px] sm:blur-[90px]" />
 
               {/* Decorative Circles */}
               <div className="absolute inset-0 rounded-full border border-purple-400/10" />
-              <div className="absolute inset-6 rounded-full border border-purple-400/10 sm:inset-8" />
+
+              <div className="absolute inset-[5%] rounded-full border border-purple-400/10" />
 
               {/* Profile Image */}
-              <div className="relative z-10 h-[82%] w-[82%] overflow-hidden rounded-full border border-purple-300/20 bg-gradient-to-br from-purple-950 to-[#120b1d] p-2 shadow-2xl shadow-purple-950/50">
+              <div className="relative z-10 h-[82%] w-[82%] overflow-hidden rounded-full border border-purple-300/20 bg-gradient-to-br from-purple-950 to-[#120b1d] p-1.5 shadow-2xl shadow-purple-950/50 sm:p-2">
                 <div className="h-full w-full overflow-hidden rounded-full bg-[#100a18]">
                   <img
                     src="/images/profile.png.jpeg"
@@ -231,14 +148,116 @@ const Hero = () => {
               </div>
             </div>
           </div>
+
+          {/* Left Side / Intro
+              Mobile: After image
+              Desktop: Left */}
+          <div
+            className={`order-2 min-w-0 text-center transition-all duration-1000 sm:order-2 lg:order-1 lg:text-left ${
+              isLoaded
+                ? "translate-y-0 opacity-100"
+                : "translate-y-8 opacity-0"
+            }`}
+          >
+            {/* Intro */}
+            <div className="mb-5 flex items-center justify-center gap-3 sm:mb-6 lg:mb-7 lg:justify-start">
+              <span className="h-px w-7 shrink-0 bg-purple-500 sm:w-10" />
+
+              <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-purple-300 sm:text-xs sm:tracking-[0.22em]">
+                Welcome to my portfolio
+              </span>
+            </div>
+
+            {/* Heading */}
+            <div className="min-w-0">
+              <span className="mb-2 block text-sm font-medium text-slate-300 sm:text-lg lg:text-2xl">
+                Hi, I&apos;m
+              </span>
+
+              <h1 className="min-h-[2.8em] break-words text-3xl font-bold leading-tight tracking-tight sm:min-h-[2.5em] sm:text-5xl lg:min-h-[2.4em] lg:text-6xl">
+                <span
+                  className={`bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent ${
+                    isName
+                      ? "text-3xl sm:text-5xl lg:text-6xl"
+                      : "text-2xl sm:text-4xl lg:text-4xl xl:text-5xl"
+                  }`}
+                >
+                  {displayText}
+                </span>
+
+                <span className="ml-1 inline-block h-[0.8em] w-[2px] animate-pulse rounded-full bg-fuchsia-400 align-middle sm:w-[3px]" />
+              </h1>
+            </div>
+
+            {/* Description */}
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-slate-400 sm:mt-4 sm:text-base sm:leading-8 lg:mx-0 lg:mt-5">
+              I specialize in crafting high-performance, modern web
+              applications using React, Next.js, TypeScript, and clean
+              architecture.
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-4 lg:justify-start">
+              <button
+                onClick={scrollToProjects}
+                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-600/40 sm:w-auto sm:px-7 sm:text-base"
+              >
+                View Projects
+
+                <ArrowUpRight
+                  size={18}
+                  className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              </button>
+
+              <div className="flex w-full justify-center sm:w-auto">
+                <CVPreview />
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:mt-10 lg:justify-start">
+              <span className="w-full text-xs text-slate-500 sm:w-auto sm:text-sm">
+                Connect with me
+              </span>
+
+              <a
+                href="mailto:fuadmaymun0@gmail.com"
+                aria-label="Email"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-300"
+              >
+                <Mail size={18} />
+              </a>
+
+              <a
+                href="https://github.com/FuadAlMaimun-1"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-300"
+              >
+                <FaGithub size={18} />
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/fuad-al-maimun-97ba42399/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="LinkedIn"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-400 transition-all duration-300 hover:-translate-y-1 hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-300"
+              >
+                <FaLinkedin size={18} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Scroll Hint */}
       <div
         ref={scrollHintRef}
-        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-slate-600 sm:flex"
-      ></div>
+        className="pointer-events-none absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-slate-600 sm:flex"
+      />
     </ScrollSequence>
   );
 };

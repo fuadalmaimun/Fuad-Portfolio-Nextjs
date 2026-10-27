@@ -11,7 +11,6 @@ const NavLink = ({ href, label, isActive }) => {
         block: "start",
       });
 
-      // URL থেকে #home, #about ইত্যাদি সরিয়ে রাখবে
       window.history.replaceState(
         null,
         "",
