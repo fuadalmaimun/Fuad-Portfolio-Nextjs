@@ -2,21 +2,6 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-/**
- * Typewriter — loops through text lines with a type → pause → delete effect.
- *
- * Each line: {
- *   tag: "h1" | "h2" | "p",           // element the line renders in
- *   className: "",                     // typography classes for the line
- *   segments: [{ text, className }],   // styled chunks (typing flows through them)
- *   typeSpeed?: ms per character (default 55),
- *   pause?: ms to hold the finished line (default 1600)
- * }
- *
- * After the last line it restarts seamlessly. A blinking cursor follows the
- * text. prefers-reduced-motion shows the first line fully typed, statically.
- */
-
 const DELETE_SPEED = 16; // ms per character while deleting
 const EMPTY_PAUSE = 350; // ms between deleting a line and typing the next
 const START_DELAY = 450; // ms before the first line starts

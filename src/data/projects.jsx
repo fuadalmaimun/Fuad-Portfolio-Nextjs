@@ -1,5 +1,5 @@
 export const projectsData = [
-  {
+{
     id: "1",
     title: "Bangla News 24",
     category: "Full Stack News Portal",
@@ -15,7 +15,7 @@ export const projectsData = [
       "Better Auth",
     ],
     image: "/images/news.png",
-    githubUrl: "https://github.com/FuadAlMaimun-1/bangla-news-24",
+    githubUrl: "https://github.com/fuadalmaimun/bangla-news-24",
     liveUrl: "https://bd-news-24.vercel.app",
     role: "Full Stack Developer",
     status: "Production Ready",
@@ -52,6 +52,64 @@ export const projectsData = [
   },
 
   {
+    id: "4",
+    title: "Wanderlust",
+    category: "Full Stack Travel & Booking Platform",
+    description:
+      "A modern travel booking platform that helps users explore destinations, discover travel packages, and manage their bookings through a responsive and user-friendly interface.",
+    detailedDescription:
+      "Wanderlust is a full-stack travel web application built with Next.js, Express.js, and MongoDB. It enables users to explore travel destinations, view destination details, authenticate securely, and manage personal bookings. Better Auth handles user authentication, while JWT-based authorization helps secure protected backend API routes.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Express.js",
+      "MongoDB",
+      "Better Auth",
+      "JWT",
+      "REST API",
+    ],
+    image: "/images/wanderlustBanner.jpg",
+    githubUrl: "https://github.com/fuadalmaimun/wanderlust",
+    liveUrl: "https://wanderlust-nine-theta-56.vercel.app/",
+    role: "Full Stack Developer",
+    status: "Live Project",
+    features: [
+      "Browse and explore travel destinations",
+      "View destination details, prices, and travel durations",
+      "Secure user authentication with Better Auth",
+      "Create and manage travel bookings",
+      "View personal bookings",
+      "Express.js REST API integrated with MongoDB",
+      "JWT-based authorization for protected backend routes",
+      "Responsive interface for desktop and mobile devices",
+    ],
+    challenges: [
+      {
+        title: "Authentication and API Security",
+        detail:
+          "Integrating Better Auth with JWT-based authorization to protect backend API routes and authenticated booking operations.",
+      },
+      {
+        title: "Dynamic Destination Data",
+        detail:
+          "Connecting the Next.js frontend with the Express.js backend and handling dynamic destination fetching and loading errors.",
+      },
+      {
+        title: "Booking Management",
+        detail:
+          "Managing booking submissions and retrieving user-specific booking records through the backend API.",
+      },
+    ],
+    futurePlans: [
+      "Integrate online payment gateways for travel bookings",
+      "Add destination search, filtering, and sorting",
+      "Implement booking confirmation email notifications",
+      "Add destination reviews and ratings",
+    ],
+  },
+
+  {
     id: "2",
     title: "Power Complaint",
     category: "Public Utility & Service Platform",
@@ -67,7 +125,7 @@ export const projectsData = [
       "REST API",
     ],
     image: "/images/power.png",
-    githubUrl: "https://github.com/FuadAlMaimun-1/power-complaints",
+    githubUrl: "https://github.com/fuadalmaimun/power-complaints",
     liveUrl: "https://power-complain.vercel.app/",
     role: "Frontend & Full Stack Developer",
     status: "Live Project",
@@ -118,7 +176,7 @@ export const projectsData = [
       "React Router",
     ],
     image: "/images/e-commarce.png",
-    githubUrl: "https://github.com/FuadAlMaimun-1/my-E-commarce-web",
+    githubUrl: "https://github.com/fuadalmaimun/my-E-commarce-web",
     liveUrl: "https://device-store-fuad.netlify.app/",
     role: "Frontend Developer",
     status: "Live Demo",
@@ -153,6 +211,8 @@ export const projectsData = [
       "Build a vendor management portal for inventory tracking.",
     ],
   },
+];
+export const getProjectById = (id) => projectsData.find((p) => p.id === id);
 
   // {
   //   id: "4",
@@ -164,7 +224,7 @@ export const projectsData = [
   //     "Bazar Dor BD addresses daily market price fluctuations by offering consumers transparent price comparisons across major essential commodities. Users can monitor price trends, search everyday staples, and locate affordable alternatives.",
   //   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "REST API"],
   //   image: "/images/baza-dor.png",
-  //   githubUrl: "https://github.com/FuadAlMaimun-1/bazar-dor-a07",
+  //   githubUrl: "https://github.com/fuadalmaimun/bazar-dor-a07",
   //   liveUrl: "https://bazar-dor-a07-seven.vercel.app",
   //   role: "Full Stack Developer",
   //   status: "Live Project",
@@ -203,7 +263,7 @@ export const projectsData = [
   //     "Dev Stack streamlines task management for developers by providing an intuitive kanban board, tag-based categorization, urgency flags, and progress metrics. Designed with clean keyboard shortcuts and smooth visual feedback.",
   //   technologies: ["React", "TypeScript", "Tailwind CSS", "Context API"],
   //   image: "/images/dev stack.png",
-  //   githubUrl: "https://github.com/FuadAlMaimun-1/dev-stack-assignment-5",
+  //   githubUrl: "https://github.com/fuadalmaimun/dev-stack-assignment-5",
   //   liveUrl: "https://dev-stack-assignment-5.netlify.app/",
   //   role: "Frontend Developer",
   //   status: "Completed",
@@ -242,7 +302,7 @@ export const projectsData = [
   //     "BPL Dream 11 lets cricket lovers assemble their dream BPL match squad within realistic salary caps. Offers player performance metrics, role quotas (batsmen, bowlers, all-rounders), and interactive balance calculators.",
   //   technologies: ["React", "DaisyUI", "Tailwind CSS", "JavaScript"],
   //   image: "/images/bpl-dream.png",
-  //   githubUrl: "https://github.com/FuadAlMaimun-1/ai-image-gen",
+  //   githubUrl: "https://github.com/fuadalmaimun/ai-image-gen",
   //   liveUrl: "https://bangladesh-national-team.netlify.app/",
   //   role: "Frontend Developer",
   //   status: "Live Project",
@@ -269,6 +329,5 @@ export const projectsData = [
   //     "Add multiplayer leaderboards and private leagues for friends.",
   //   ],
   // },
-];
 
-export const getProjectById = (id) => projectsData.find((p) => p.id === id);
+

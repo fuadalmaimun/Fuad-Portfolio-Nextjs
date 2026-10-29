@@ -159,7 +159,7 @@ const Navbar = () => {
         <div className="flex shrink-0 items-center gap-1 sm:gap-3">
           {/* GitHub */}
           <a
-            href="https://github.com/FuadAlMaimun-1"
+            href="https://github.com/fuadalmaimun"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"

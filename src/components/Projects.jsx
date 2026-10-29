@@ -100,7 +100,7 @@ export const Projects = () => {
           </p>
 
           <a
-            href="https://github.com/FuadAlMaimun-1"
+            href="https://github.com/fuadalmaimun"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-7 py-3 rounded-full bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/40 text-purple-200 text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-950/40"

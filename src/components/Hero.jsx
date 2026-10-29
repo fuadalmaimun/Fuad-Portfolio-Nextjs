@@ -230,7 +230,7 @@ const Hero = () => {
               </a>
 
               <a
-                href="https://github.com/FuadAlMaimun-1"
+                href="https://github.com/fuadalmaimun"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="GitHub"
