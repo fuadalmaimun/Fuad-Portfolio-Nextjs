@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight, Download, Mail } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import ScrollSequence from "./ScrollSequence";
 import { FRAME_SEQUENCES } from "../data/frames";
 import CVPreview from "@/components/CVPreview";
+import { SITE } from "../data/site";
 
 const TEXTS = [
   "Fuad Al Maimun",
@@ -198,9 +199,26 @@ const Hero = () => {
 
             {/* Buttons */}
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-4 lg:justify-start">
+              {/* Primary Resume CTA with shimmer sweep on hover */}
+              <a
+                href={SITE.resume.url}
+                download={SITE.resume.downloadName}
+                className="group relative inline-flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-600/40 hover:brightness-110 sm:w-auto sm:px-7 sm:text-base"
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-white/25 transition-all duration-700 ease-out group-hover:left-[130%]"
+                />
+                <Download
+                  size={18}
+                  className="relative transition-transform duration-300 group-hover:translate-y-0.5"
+                />
+                <span className="relative">Download Resume</span>
+              </a>
+
               <button
                 onClick={scrollToProjects}
-                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-600/40 sm:w-auto sm:px-7 sm:text-base"
+                className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-purple-500/40 bg-purple-950/30 px-6 py-3.5 text-sm font-semibold text-purple-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/70 hover:bg-purple-600/20 hover:text-white sm:w-auto sm:px-7 sm:text-base"
               >
                 View Projects
 

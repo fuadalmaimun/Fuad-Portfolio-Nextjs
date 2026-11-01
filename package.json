@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "oxlint",
     "frames": "node scripts/optimize-frames.mjs"
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.6.1",
+    "oxlint": "^1.90.0",
     "postcss": "^8.5.29",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"

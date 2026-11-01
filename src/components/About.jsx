@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Code2,
   Compass,
   Briefcase,
   Heart,
@@ -12,7 +11,6 @@ import {
   CheckCircle2,
   Terminal,
   Zap,
-  Users,
   Cpu,
 } from "lucide-react";
 

@@ -48,7 +48,7 @@ export default function ProjectCard({ project, index = 0, onViewDetails }) {
         <div className="absolute inset-0 bg-purple-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/70 text-xs font-semibold text-white border border-purple-400/40 backdrop-blur-md">
             <Info size={14} className="text-purple-400" />
-            Click for full details
+            Open case study
           </span>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function ProjectCard({ project, index = 0, onViewDetails }) {
             className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-950/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-purple-600/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
           >
             <Info size={17} />
-            View Details
+            View Case Study
           </button>
 
           {/* Live Demo */}

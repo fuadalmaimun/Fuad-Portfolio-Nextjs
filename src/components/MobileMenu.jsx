@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+import { Download } from "lucide-react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { SITE } from "../data/site";
 
 const MobileMenu = ({
   isOpen,
@@ -80,6 +82,20 @@ const MobileMenu = ({
               );
             })}
           </div>
+
+          {/* Download Resume CTA */}
+          <a
+            href={SITE.resume.url}
+            download={SITE.resume.downloadName}
+            tabIndex={isOpen ? 0 : -1}
+            className="group mt-4 flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:brightness-110"
+          >
+            <Download
+              size={16}
+              className="transition-transform duration-300 group-hover:translate-y-0.5"
+            />
+            Download Resume
+          </a>
 
           {/* Social links */}
           <div className="mt-5 flex items-center justify-center gap-3 border-t border-white/10 pt-5">

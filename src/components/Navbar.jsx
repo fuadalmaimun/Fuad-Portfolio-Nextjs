@@ -1,24 +1,25 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Download, Menu, X } from "lucide-react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
-import NavLink from "./NavLink";
 import MobileMenu from "./MobileMenu";
+import { SITE } from "../data/site";
+
+const NAV_ITEMS = [
+  { label: "Home", id: "home" },
+  { label: "About", id: "about" },
+  { label: "Skills", id: "skills" },
+  { label: "Projects", id: "projects" },
+  { label: "Education", id: "education" },
+  { label: "Contact", id: "contact" },
+];
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const navItems = [
-    { label: "Home", id: "home" },
-    { label: "About", id: "about" },
-    { label: "Skills", id: "skills" },
-    { label: "Projects", id: "projects" },
-    { label: "Education", id: "education" },
-    { label: "Contact", id: "contact" },
-  ];
 
   // Scroll position and active section
   useEffect(() => {
@@ -37,7 +38,7 @@ const Navbar = () => {
       const scrollPosition = window.scrollY + 160;
       let currentSection = "home";
 
-      for (const item of navItems) {
+      for (const item of NAV_ITEMS) {
         const element = document.getElementById(item.id);
 
         if (element && element.getBoundingClientRect().top + window.scrollY <= scrollPosition) {
@@ -135,7 +136,7 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-5 lg:flex xl:gap-8">
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <a
               key={item.id}
               href={`#${item.id}`}
@@ -192,6 +193,20 @@ const Navbar = () => {
 
           <div className="mx-1 hidden h-5 w-px bg-white/10 sm:block" />
 
+          {/* Download Resume CTA */}
+          <a
+            href={SITE.resume.url}
+            download={SITE.resume.downloadName}
+            aria-label="Download resume (PDF)"
+            className="group hidden items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/10 px-3.5 py-2 text-xs font-semibold text-purple-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-400 hover:bg-purple-600 hover:text-white hover:shadow-lg hover:shadow-purple-900/30 sm:inline-flex lg:px-4 lg:text-sm"
+          >
+            <Download
+              size={14}
+              className="transition-transform duration-300 group-hover:translate-y-0.5"
+            />
+            Resume
+          </a>
+
           {/* Mobile Menu Button */}
           <button
             type="button"
@@ -215,7 +230,7 @@ const Navbar = () => {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         activeSection={activeSection}
-        navItems={navItems}
+        navItems={NAV_ITEMS}
         onSectionClick={handleSectionClick}
       />
     </header>

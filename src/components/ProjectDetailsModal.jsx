@@ -11,8 +11,50 @@ import {
   CheckCircle2,
   Sparkles,
   Code2,
+  GitBranch,
+  Server,
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+
+/** Case-study tabs, in display order. */
+const TABS = [
+  { id: "overview", label: "Overview & Features", icon: Sparkles },
+  { id: "tech", label: "Tech Stack", icon: Code2 },
+  { id: "state", label: "State Management", icon: GitBranch },
+  { id: "backend", label: "Backend Architecture", icon: Server },
+  { id: "challenges", label: "Challenges Solved", icon: AlertTriangle },
+  { id: "future", label: "Future Plans", icon: Rocket },
+];
+
+/** Numbered highlight cards shared by the case-study tabs. */
+function HighlightList({ items, emptyMessage }) {
+  if (!items || items.length === 0) {
+    return <p className="text-sm text-gray-400 italic">{emptyMessage}</p>;
+  }
+
+  return (
+    <div className="space-y-3 pt-1">
+      {items.map((item, idx) => (
+        <div
+          key={idx}
+          className="rounded-2xl border border-purple-500/20 bg-purple-950/20 p-4 backdrop-blur-md sm:p-5"
+        >
+          <div className="mb-2 flex items-center gap-2.5">
+            <span className="flex h-6 w-6 items-center justify-center rounded-lg border border-purple-400/30 bg-purple-600/30 text-xs font-bold text-purple-300">
+              {idx + 1}
+            </span>
+            <h4 className="text-sm font-bold text-white sm:text-base">
+              {item.title}
+            </h4>
+          </div>
+          <p className="pl-8 text-xs leading-relaxed text-gray-300 sm:text-sm">
+            {item.detail}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function ProjectDetailsModal({ project, isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -161,59 +203,38 @@ export default function ProjectDetailsModal({ project, isOpen, onClose }) {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex flex-wrap items-center gap-2 border-b border-purple-500/20 pb-3">
-            <button
-              onClick={() => setActiveTab("overview")}
-              className={`flex items-center gap-1.5 sm:gap-2 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === "overview"
-                  ? "bg-purple-600/30 text-purple-200 border border-purple-500/50 shadow-md shadow-purple-950/40"
-                  : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
-              }`}
-            >
-              <Sparkles size={14} />
-              <span>Overview & Features</span>
-            </button>
+          <div
+            role="tablist"
+            aria-label="Case study sections"
+            className="flex flex-wrap items-center gap-2 border-b border-purple-500/20 pb-3"
+          >
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
 
-            <button
-              onClick={() => setActiveTab("tech")}
-              className={`flex items-center gap-1.5 sm:gap-2 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === "tech"
-                  ? "bg-purple-600/30 text-purple-200 border border-purple-500/50 shadow-md shadow-purple-950/40"
-                  : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
-              }`}
-            >
-              <Code2 size={14} />
-              <span>Tech Stack</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("challenges")}
-              className={`flex items-center gap-1.5 sm:gap-2 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === "challenges"
-                  ? "bg-purple-600/30 text-purple-200 border border-purple-500/50 shadow-md shadow-purple-950/40"
-                  : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
-              }`}
-            >
-              <AlertTriangle size={14} />
-              <span>Challenges Faced ({project.challenges?.length || 0})</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab("future")}
-              className={`flex items-center gap-1.5 sm:gap-2 rounded-xl px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === "future"
-                  ? "bg-purple-600/30 text-purple-200 border border-purple-500/50 shadow-md shadow-purple-950/40"
-                  : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
-              }`}
-            >
-              <Rocket size={14} />
-              <span>Future Plans</span>
-            </button>
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all sm:gap-2 sm:text-sm ${
+                    isActive
+                      ? "border border-purple-500/50 bg-purple-600/30 text-purple-200 shadow-md shadow-purple-950/40"
+                      : "text-gray-400 hover:bg-white/[0.04] hover:text-white"
+                  }`}
+                >
+                  <Icon size={14} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Tab 1: Overview & Features */}
           {activeTab === "overview" && (
-            <div className="space-y-5 animate-fade-in">
+            <div className="space-y-5 animate-fade-in" role="tabpanel">
               <div>
                 <h3 className="text-base font-bold text-white mb-2">Project Overview</h3>
                 <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
@@ -244,7 +265,7 @@ export default function ProjectDetailsModal({ project, isOpen, onClose }) {
 
           {/* Tab 2: Tech Stack */}
           {activeTab === "tech" && (
-            <div className="space-y-4 animate-fade-in">
+            <div className="space-y-4 animate-fade-in" role="tabpanel">
               <div>
                 <h3 className="text-base font-bold text-white mb-1">Architecture & Technologies</h3>
                 <p className="text-xs text-gray-400">
@@ -271,9 +292,59 @@ export default function ProjectDetailsModal({ project, isOpen, onClose }) {
             </div>
           )}
 
-          {/* Tab 3: Challenges Faced During Development */}
+          {/* Tab 3: State Management Approach */}
+          {activeTab === "state" && (
+            <div className="space-y-4 animate-fade-in" role="tabpanel">
+              <div>
+                <h3 className="text-base font-bold text-white mb-1">
+                  State Management Approach
+                </h3>
+                <p className="text-xs text-gray-400">
+                  How data and UI state are modelled so the application stays predictable, fast and easy to extend.
+                </p>
+              </div>
+
+              {project.stateManagement?.summary && (
+                <p className="rounded-2xl border border-purple-500/20 bg-purple-950/20 p-4 text-xs leading-relaxed text-gray-300 sm:text-sm">
+                  {project.stateManagement.summary}
+                </p>
+              )}
+
+              <HighlightList
+                items={project.stateManagement?.highlights}
+                emptyMessage="No state management notes recorded for this project."
+              />
+            </div>
+          )}
+
+          {/* Tab 4: Backend Architecture */}
+          {activeTab === "backend" && (
+            <div className="space-y-4 animate-fade-in" role="tabpanel">
+              <div>
+                <h3 className="text-base font-bold text-white mb-1">
+                  Backend Architecture
+                </h3>
+                <p className="text-xs text-gray-400">
+                  Services, data stores and security boundaries that power the application behind the interface.
+                </p>
+              </div>
+
+              {project.backendArchitecture?.summary && (
+                <p className="rounded-2xl border border-purple-500/20 bg-purple-950/20 p-4 text-xs leading-relaxed text-gray-300 sm:text-sm">
+                  {project.backendArchitecture.summary}
+                </p>
+              )}
+
+              <HighlightList
+                items={project.backendArchitecture?.highlights}
+                emptyMessage="No backend architecture notes recorded for this project."
+              />
+            </div>
+          )}
+
+          {/* Tab 5: Challenges Faced During Development */}
           {activeTab === "challenges" && (
-            <div className="space-y-4 animate-fade-in">
+            <div className="space-y-4 animate-fade-in" role="tabpanel">
               <div>
                 <h3 className="text-base font-bold text-white mb-1">
                   Engineering Challenges & Solutions
@@ -283,36 +354,16 @@ export default function ProjectDetailsModal({ project, isOpen, onClose }) {
                 </p>
               </div>
 
-              <div className="space-y-3 pt-1">
-                {project.challenges && project.challenges.length > 0 ? (
-                  project.challenges.map((challenge, idx) => (
-                    <div
-                      key={idx}
-                      className="rounded-2xl border border-purple-500/20 bg-purple-950/20 p-4 sm:p-5 backdrop-blur-md"
-                    >
-                      <div className="flex items-center gap-2.5 mb-2">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-purple-600/30 border border-purple-400/30 text-purple-300 text-xs font-bold">
-                          {idx + 1}
-                        </span>
-                        <h4 className="text-sm sm:text-base font-bold text-white">
-                          {challenge.title}
-                        </h4>
-                      </div>
-                      <p className="text-xs sm:text-sm text-gray-300 leading-relaxed pl-8">
-                        {challenge.detail}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-400 italic">No specific challenges recorded.</p>
-                )}
-              </div>
+              <HighlightList
+                items={project.challenges}
+                emptyMessage="No specific challenges recorded."
+              />
             </div>
           )}
 
-          {/* Tab 4: Future Plans & Improvements */}
+          {/* Tab 6: Future Plans & Improvements */}
           {activeTab === "future" && (
-            <div className="space-y-4 animate-fade-in">
+            <div className="space-y-4 animate-fade-in" role="tabpanel">
               <div>
                 <h3 className="text-base font-bold text-white mb-1">
                   Future Roadmap & Planned Improvements

@@ -1,102 +1,174 @@
-import React, { useState, useEffect } from "react";
-import { SiReact, SiJavascript, SiTypescript, SiTailwindcss, SiNextdotjs, SiNodedotjs, SiMongodb, SiExpress } from "react-icons/si";
+"use client";
+
+import React, { useEffect, useMemo, useState } from "react";
+import { Sparkles } from "lucide-react";
+import {
+  SiReact,
+  SiJavascript,
+  SiTypescript,
+  SiTailwindcss,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiMongodb,
+  SiExpress,
+} from "react-icons/si";
+import { getAllSkills } from "../data/skills";
+import SkillCard from "./SkillCard";
+
+const CATEGORIES = [
+  { id: "all", label: "All Skills" },
+  { id: "frontend", label: "Frontend" },
+  { id: "backend", label: "Backend" },
+  { id: "database", label: "Database" },
+  { id: "tools", label: "Tools" },
+];
+
+/** Quick-recognition tech strip shown under the progress grid. */
+const TECH_STRIP = [
+  { name: "React", icon: <SiReact className="text-[#61DAFB]" /> },
+  { name: "TypeScript", icon: <SiTypescript className="text-[#3178C6]" /> },
+  { name: "Next.js", icon: <SiNextdotjs className="text-white" /> },
+  { name: "Node.js", icon: <SiNodedotjs className="text-[#339933]" /> },
+  { name: "Express.js", icon: <SiExpress className="text-white" /> },
+  { name: "JavaScript", icon: <SiJavascript className="text-[#F7DF1E]" /> },
+  { name: "Tailwind CSS", icon: <SiTailwindcss className="text-[#06B6D4]" /> },
+  { name: "MongoDB", icon: <SiMongodb className="text-[#47A248]" /> },
+];
+
 export const Skills = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("all");
+
   useEffect(() => {
     const section = document.getElementById("skills");
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) setIsVisible(true);
-    }, {
-      threshold: 0.2
-    });
-    if (section) observer.observe(section);
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setIsVisible(true);
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(section);
     return () => observer.disconnect();
   }, []);
 
-  // Figma Design Row 1 Icons (7 Badges)
-  const topRowIcons = [{
-    name: "React",
-    icon: <SiReact className="text-[#61DAFB]" />
-  }, {
-    name: "TypeScript",
-    icon: <SiTypescript className="text-[#3178C6]" />
-  }, {
-    name: "Node.js",
-    icon: <SiNodedotjs className="text-[#339933]" />
-  }, {
-    name: "Express.js",
-    icon: <SiExpress className="text-white" />
-  }, {
-    name: "JavaScript",
-    icon: <SiJavascript className="text-[#F7DF1E]" />
-  }, {
-    name: "Next.js",
-    icon: <SiNextdotjs className="text-white" />
-  }];
+  const skills = useMemo(() => {
+    const all = getAllSkills();
+    return activeCategory === "all"
+      ? all
+      : all.filter((skill) => skill.category === activeCategory);
+  }, [activeCategory]);
 
-  // Figma Design Row 2 Icons (4 Badges)
-  const bottomRowIcons = [{
-    name: "Tailwind CSS",
-    icon: <SiTailwindcss className="text-[#06B6D4]" />
-  }, {
-    name: "MongoDB",
-    icon: <SiMongodb className="text-[#47A248]" />
-  }];
-  return <section id="skills" className="relative overflow-hidden bg-[#05020D] py-20 min-h-[820px] flex items-center justify-center select-none font-preahvihear">
-      <div className="container-safe relative z-10 flex flex-col items-center text-center w-full max-w-4xl px-4">
-        {/* Header Title with Preahvihear Font */}
-        <div className={`max-w-xl mx-auto mb-10 transition-all duration-700 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <h2 className="text-lg md:text-xl font-normal text-[#E2E8F0] leading-relaxed tracking-wide">
-            I'm currently looking to join a{" "}
-            <span className="text-[#A855F7]">cross-functional team</span> that
-            values improving people's lives through accessible design
+  return (
+    <section
+      id="skills"
+      className="relative overflow-hidden bg-[#05020D] py-24 font-preahvihear select-none"
+    >
+      {/* Background Glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-[-10%] top-[15%] h-[460px] w-[460px] rounded-full bg-purple-600/10 blur-[150px]" />
+        <div className="absolute right-[-10%] bottom-[10%] h-[460px] w-[460px] rounded-full bg-fuchsia-600/10 blur-[150px]" />
+      </div>
+
+      <div className="container-safe relative z-10 max-w-6xl">
+        {/* Section Header */}
+        <div
+          className={`mx-auto mb-10 max-w-2xl text-center transition-all duration-700 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          }`}
+        >
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-950/40 px-3.5 py-1.5 text-xs tracking-[0.25em] text-purple-300 uppercase backdrop-blur-md">
+            <Sparkles size={14} className="text-purple-400" />
+            <span>Skill Set</span>
+          </div>
+
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+            Technical{" "}
+            <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
+              Expertise
+            </span>
           </h2>
+
+          <p className="mt-4 text-sm leading-relaxed text-gray-400 sm:text-base">
+            Hands-on experience across the stack — from pixel-perfect React
+            interfaces to REST APIs and MongoDB databases. Proficiency levels
+            reflect real work shipped in production projects.
+          </p>
         </div>
 
-        {/* Dynamic Skill Badges Node Section */}
-        <div className={`relative z-20 flex flex-col items-center gap-3 max-w-lg mx-auto transition-all duration-700 delay-200 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          {/* Top Row */}
-          <div className="flex flex-wrap justify-center gap-3">
-            {topRowIcons.map((item, idx) => <div key={idx} className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#130B24] border border-[#A855F7]/30 flex items-center justify-center text-lg shadow-md hover:scale-110 hover:border-[#A855F7] transition-all duration-300 cursor-pointer" title={item.name}>
-                {item.icon}
-              </div>)}
-          </div>
+        {/* Category Filter Tabs */}
+        <div
+          role="tablist"
+          aria-label="Filter skills by category"
+          className={`mb-9 flex flex-wrap items-center justify-center gap-2 transition-all duration-700 delay-100 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          {CATEGORIES.map((category) => {
+            const isActive = activeCategory === category.id;
 
-          {/* Bottom Row */}
-          <div className="flex flex-wrap justify-center gap-3">
-            {bottomRowIcons.map((item, idx) => <div key={idx} className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#130B24] border border-[#A855F7]/30 flex items-center justify-center text-lg shadow-md hover:scale-110 hover:border-[#A855F7] transition-all duration-300 cursor-pointer" title={item.name}>
-                {item.icon}
-              </div>)}
-          </div>
+            return (
+              <button
+                key={category.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActiveCategory(category.id)}
+                className={`rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 sm:text-sm ${
+                  isActive
+                    ? "bg-gradient-to-r from-purple-600 to-fuchsia-600 text-white shadow-lg shadow-purple-950/40"
+                    : "border border-purple-500/30 bg-purple-950/30 text-purple-200 hover:-translate-y-0.5 hover:border-purple-400/60 hover:text-white"
+                }`}
+              >
+                {category.label}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Tree Connecting Lines (SVG Curved Connectors) */}
-        <div className="w-full max-w-md h-16 relative pointer-events-none z-10 mt-1">
-          <svg className="w-full h-full stroke-purple-500/25" fill="none">
-            <path d="M 60 0 C 60 30, 200 30, 225 64" strokeWidth="1" />
-            <path d="M 130 0 C 130 30, 210 30, 225 64" strokeWidth="1" />
-            <path d="M 225 0 L 225 64" strokeWidth="1" strokeDasharray="3 3" />
-            <path d="M 320 0 C 320 30, 240 30, 225 64" strokeWidth="1" />
-            <path d="M 390 0 C 390 30, 250 30, 225 64" strokeWidth="1" />
-          </svg>
+        {/* Animated Skill Progress Grid (remounts on filter change to replay animation) */}
+        <div
+          key={activeCategory}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
+        >
+          {skills.map((skill, index) => (
+            <SkillCard
+              key={skill.id}
+              skill={skill}
+              index={index}
+              isActive={isVisible}
+            />
+          ))}
         </div>
 
-        {/* Central Glowing Logo Node & Perspective Rings */}
-        <div className={`relative flex items-center justify-center transition-all duration-1000 ease-out delay-300 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"}`}>
-          {/* Outer Ambient Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-purple-600/20 rounded-full blur-[80px] -z-10" />
+        {/* Tech Strip */}
+        <div
+          className={`mt-14 border-t border-purple-900/30 pt-8 text-center transition-all duration-700 delay-200 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <p className="mb-5 text-xs font-semibold tracking-[0.25em] text-slate-500 uppercase">
+            Daily Toolbox
+          </p>
 
-          {/* Center Circular Node */}
-          <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-b from-[#8B5CF6] to-[#4C1D95] flex items-center justify-center border border-purple-300/30 shadow-[0_0_50px_rgba(139,92,246,0.4)] z-20 overflow-hidden">
-            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/cute-boy-confused-while-sitting-on-couch-with-laptop-3d-icon-png-download-13031230.png" alt="Developer working on laptop" className="w-full h-full object-cover object-center" />
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
+            {TECH_STRIP.map((item) => (
+              <span
+                key={item.name}
+                title={item.name}
+                className="inline-flex cursor-default items-center gap-2 rounded-full border border-[#A855F7]/30 bg-[#130B24] px-3.5 py-2 text-xs font-medium text-slate-300 shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#A855F7] hover:text-white sm:text-sm"
+              >
+                <span className="text-base">{item.icon}</span>
+                {item.name}
+              </span>
+            ))}
           </div>
-
-          {/* Perspective Outer Orbit Ellipses */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[190px] border border-purple-500/20 rounded-[100%] [transform:rotateX(74deg)] pointer-events-none z-0" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[240px] border border-purple-500/15 rounded-[100%] [transform:rotateX(74deg)] pointer-events-none z-0" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[290px] border border-purple-500/10 rounded-[100%] [transform:rotateX(74deg)] pointer-events-none z-0" />
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Skills;

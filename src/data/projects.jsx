@@ -43,6 +43,58 @@ export const projectsData = [
           "Designing role-based authentication with Better Auth to safeguard the content publishing pipeline against unauthorized access.",
       },
     ],
+    stateManagement: {
+      summary:
+        "A server-first architecture: Next.js App Router Server Components render article lists and pages, while client components are reserved for genuinely interactive pieces such as comments, search and the trending ticker. Category and pagination state live in the URL, making every news view shareable and cacheable.",
+      highlights: [
+        {
+          title: "URL-driven filters",
+          detail:
+            "Category and page state sync to search params, giving the UI a single source of truth and making every news view bookmarkable.",
+        },
+        {
+          title: "Incremental Static Regeneration",
+          detail:
+            "Article pages are statically generated and revalidated in the background, so breaking news appears quickly without a full rebuild.",
+        },
+        {
+          title: "Session state via Better Auth",
+          detail:
+            "Editor sessions are handled by Better Auth with httpOnly cookies — only server-side role checks gate the admin UI, never localStorage.",
+        },
+        {
+          title: "Targeted revalidation",
+          detail:
+            "Publishing or editing an article revalidates only the affected paths and tags, so the CDN never serves stale headlines.",
+        },
+      ],
+    },
+    backendArchitecture: {
+      summary:
+        "A single Next.js application on Vercel: route handlers and server actions sit directly on top of MongoDB, while Better Auth owns identity, sessions and editorial roles — no separate API server to deploy or keep in sync.",
+      highlights: [
+        {
+          title: "MongoDB collections",
+          detail:
+            "Articles, categories, users and comments are modelled as collections with indexed slug and category fields for fast lookups.",
+        },
+        {
+          title: "Route handlers & server actions",
+          detail:
+            "Public reads are served from cached route handlers; mutations run through server actions with validation before touching the database.",
+        },
+        {
+          title: "Role-based authorization",
+          detail:
+            "Better Auth issues secure sessions and enforces reader-vs-editor permissions on every privileged operation, server-side.",
+        },
+        {
+          title: "Editorial publishing pipeline",
+          detail:
+            "A draft-to-publish workflow triggers cache revalidation hooks so readers always see the latest version of a story.",
+        },
+      ],
+    },
     futurePlans: [
       "Integrate an AI-assisted article summarizer for quick bullet-point takeaways.",
       "Implement Web Push Notifications for urgent breaking news alerts.",
@@ -101,6 +153,58 @@ export const projectsData = [
           "Managing booking submissions and retrieving user-specific booking records through the backend API.",
       },
     ],
+    stateManagement: {
+      summary:
+        "The Next.js App Router handles server-fetched destination data for fast first paint, while client components own the interactive booking flows. Authentication state is managed by Better Auth and stored in httpOnly cookies, so raw tokens never live in localStorage.",
+      highlights: [
+        {
+          title: "Server-fetched destinations",
+          detail:
+            "Destination lists and detail pages fetch on the server with loading and error boundaries, keeping first paint fast and SEO-friendly.",
+        },
+        {
+          title: "Cookie-based session state",
+          detail:
+            "Better Auth keeps session cookies httpOnly — the frontend reads user state from the session endpoint instead of parsing tokens itself.",
+        },
+        {
+          title: "JWT for API authorization",
+          detail:
+            "Protected booking routes validate a signed JWT in Express middleware, so only authenticated callers can create or read bookings.",
+        },
+        {
+          title: "Per-user booking views",
+          detail:
+            "Booking lists are filtered by the authenticated user id on the server, avoiding over-fetching and stale client-side caches.",
+        },
+      ],
+    },
+    backendArchitecture: {
+      summary:
+        "A standalone Express.js REST API with MongoDB, consumed by the Next.js frontend across a clear JSON contract — frontend and backend deploy independently and scale separately.",
+      highlights: [
+        {
+          title: "REST resource endpoints",
+          detail:
+            "Destinations and bookings are exposed as consistent JSON resources with standard status codes and centralized error handling.",
+        },
+        {
+          title: "JWT middleware",
+          detail:
+            "A verification step guards every mutating route; invalid or expired tokens are rejected before any database work happens.",
+        },
+        {
+          title: "MongoDB persistence",
+          detail:
+            "Destinations and bookings are stored in MongoDB with reference integrity between a user and their booking records.",
+        },
+        {
+          title: "CORS & environment configuration",
+          detail:
+            "An origin allow-list and env-driven config keep the API safe to run in development and production side by side.",
+        },
+      ],
+    },
     futurePlans: [
       "Integrate online payment gateways for travel bookings",
       "Add destination search, filtering, and sorting",
@@ -153,6 +257,58 @@ export const projectsData = [
           "Filtering and categorizing high volumes of complaint entries without UI lag using client-side memoization and paginated queries.",
       },
     ],
+    stateManagement: {
+      summary:
+        "The complaint wizard is driven by a single useReducer that owns the current step, form data and validation errors, making the multi-step flow predictable and easy to reset. Ticket status uses optimistic updates plus polling so users see progress without refreshing.",
+      highlights: [
+        {
+          title: "useReducer-driven wizard",
+          detail:
+            "Step navigation, field values and per-step validation errors all dispatch to one reducer — no tangled useState chains.",
+        },
+        {
+          title: "Optimistic ticket tracking",
+          detail:
+            "Status milestones update immediately in the UI and reconcile with the server on the next poll, eliminating manual refreshes.",
+        },
+        {
+          title: "Memoized dashboard filtering",
+          detail:
+            "Zone, urgency and date filters run through useMemo so large ticket lists re-render without frame drops.",
+        },
+        {
+          title: "Controlled upload state",
+          detail:
+            "Photo previews and progress are tracked per field, keeping the form responsive even on low-bandwidth mobile connections.",
+        },
+      ],
+    },
+    backendArchitecture: {
+      summary:
+        "A REST API layer manages the full ticket lifecycle with role-based access for citizens and administrators, automated ticket ID generation, and paginated queries that keep dashboards fast as complaint volume grows.",
+      highlights: [
+        {
+          title: "Ticket lifecycle endpoints",
+          detail:
+            "Create, read and transition-status endpoints enforce the Pending → In Progress → Resolved state machine on the server.",
+        },
+        {
+          title: "Role-based authorization",
+          detail:
+            "Admin dashboards and triage actions are gated by role checks; citizens can only read their own tickets.",
+        },
+        {
+          title: "Evidence photo uploads",
+          detail:
+            "Incident photos are accepted with size and type validation and stored separately from ticket metadata.",
+        },
+        {
+          title: "Paginated, indexed queries",
+          detail:
+            "Admin listings paginate and filter by zone and date so dashboards stay responsive as data accumulates.",
+        },
+      ],
+    },
     futurePlans: [
       "Integrate interactive GIS mapping (Leaflet/Mapbox) to visualize outage clusters on city maps.",
       "Add automated SMS alert triggers upon each stage of complaint resolution.",
@@ -204,6 +360,58 @@ export const projectsData = [
           "Designing a sticky cart drawer and summary breakdown that remains accessible and clutter-free on small mobile screens.",
       },
     ],
+    stateManagement: {
+      summary:
+        "Cart and session state live in React Context backed by useReducer, with a persistence layer that writes through to localStorage and re-hydrates across browser tabs. Search and filter values are treated as derived state, never duplicated copies.",
+      highlights: [
+        {
+          title: "Context + useReducer cart",
+          detail:
+            "Add, remove and quantity changes dispatch to one reducer, so totals and item counts are always derived — never drift out of sync.",
+        },
+        {
+          title: "Cross-tab persistence",
+          detail:
+            "Cart state serializes to localStorage on every change and re-hydrates from storage events, keeping multiple tabs consistent.",
+        },
+        {
+          title: "Debounced derived filters",
+          detail:
+            "Search input is debounced and fed into memoized price/category filtering, avoiding re-render storms while typing.",
+        },
+        {
+          title: "Router-driven navigation",
+          detail:
+            "React Router carries product and category state in the URL, so deep links restore the exact browsing context.",
+        },
+      ],
+    },
+    backendArchitecture: {
+      summary:
+        "A deliberately frontend-only build with a typed service layer that abstracts the product catalog, cart and checkout behind swappable adapters — mock data today, a real API tomorrow, without touching UI code.",
+      highlights: [
+        {
+          title: "Service-layer abstraction",
+          detail:
+            "All catalog, cart and order reads go through one data module — components never call fetch or localStorage directly.",
+        },
+        {
+          title: "Adapter-ready checkout",
+          detail:
+            "Order submission runs through an adapter interface designed for Stripe or SSLCommerz to drop in later.",
+        },
+        {
+          title: "Versioned local persistence",
+          detail:
+            "localStorage acts as the temporary store with versioned keys, so schema changes can't crash returning visitors.",
+        },
+        {
+          title: "API-shaped contracts",
+          detail:
+            "Types mirror a REST shape (entities, lists, errors), which makes wiring a real backend a drop-in change.",
+        },
+      ],
+    },
     futurePlans: [
       "Integrate Stripe & SSLCommerz payment gateways for live transactional processing.",
       "Add customer product reviews with photo uploads and verified buyer badges.",

@@ -66,7 +66,9 @@ export const Projects = () => {
           </h2>
 
           <p className="mt-4 text-sm sm:text-base text-gray-400 leading-relaxed max-w-xl mx-auto">
-            A showcase of full-stack and frontend applications built with Next.js, React, TypeScript, and modern styling.
+            A showcase of full-stack and frontend applications — open any case
+            study for core features, architecture, state management, and the
+            engineering challenges solved along the way.
           </p>
         </div>
 

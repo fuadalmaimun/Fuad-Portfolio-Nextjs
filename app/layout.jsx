@@ -1,5 +1,43 @@
 import "../src/styles/globals.css";
+import "./globals.css";
 
+export const metadata = {
+  metadataBase: new URL("https://fuad-al-maimun.vercel.app"),
+
+  title: {
+    default: "Fuad Al Maimun | Full Stack Developer",
+    template: "%s | Fuad Al Maimun",
+  },
+
+  description:
+    "Fuad Al Maimun is a web developer building responsive websites and full-stack web applications using React, Next.js, and Node.js.",
+
+  keywords: [
+    "Fuad Al Maimun",
+    "Fuad Al Maimun Portfolio",
+    "Fuad",
+    "Maimun",
+    "Next.js Developer",
+    "React Developer",
+    "Full Stack Developer",
+    "Web Developer Bangladesh",
+  ],
+
+  openGraph: {
+    title: "Fuad Al Maimun | Full Stack Developer",
+    description:
+      "Explore my portfolio, web development projects, and technical skills.",
+    url: "https://fuad-al-maimun.vercel.app",
+    siteName: "Fuad Al Maimun Portfolio",
+    type: "website",
+    images: ["/profile.png.jpeg"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
 
 export default function RootLayout({ children }) {
   return (

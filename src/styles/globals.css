@@ -469,3 +469,45 @@ select:disabled {
 .orbit-ring-counter {
   animation: orbit-ring-counter 28s linear infinite;
 }
+
+/* ==========================================================================
+   Contact form fields
+   These rules intentionally live outside the Tailwind layers so they take
+   precedence over the base input styles defined earlier in this file and can
+   express hover / invalid states.
+   ========================================================================== */
+.contact-field {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact-field:hover:not(:disabled):not(:focus) {
+  border-color: rgba(168, 85, 247, 0.45);
+}
+
+.contact-field.has-error,
+.contact-field.has-error:hover {
+  border-color: rgba(248, 113, 113, 0.75);
+}
+
+.contact-field.has-error:focus {
+  border-color: rgba(248, 113, 113, 0.9);
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.18);
+}
+
+/* ==========================================================================
+   Reduced motion — honour the visitor's OS-level preference
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,8 +1,12 @@
 import React from "react";
 import { FaFacebook, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { Mail } from "lucide-react";
-export const Contact = () => {
-  return <footer id="contact" className="relative scroll-mt-20 bg-[#0A0518] text-white px-6 md:px-10 lg:px-16 py-10 font-['Preahvihear'] overflow-hidden">
+import { SITE, SOCIALS } from "../data/site";
+
+const CURRENT_YEAR = new Date().getFullYear();
+
+export const Footer = () => {
+  return <footer id="footer" className="relative scroll-mt-20 bg-[#0A0518] text-white px-6 md:px-10 lg:px-16 py-10 font-['Preahvihear'] overflow-hidden">
       {/* Background Glow */}
       <div className="pointer-events-none absolute -top-20 -left-20 h-64 w-64 rounded-full bg-purple-600/15 blur-[100px]" />
 
@@ -21,16 +25,16 @@ export const Contact = () => {
           <div className="max-w-md text-left">
 
             <h2 className="text-2xl md:text-3xl font-bold text-white">
-              Let's Connect
+              Thanks for stopping by
             </h2>
 
             <p className="mt-3 text-sm text-gray-400 leading-relaxed">
-              Have a project in mind or want to work together?
-              Feel free to reach out. I'm always open to discussing
-              new projects and opportunities.
+              Built with React, Next.js and Tailwind CSS.
+              Have a project in mind? Head back to the
+              contact section and let&apos;s talk.
             </p>
 
-          
+
           </div>
 
           {/* Right Content */}
@@ -43,26 +47,24 @@ export const Contact = () => {
             <div className="flex items-center gap-3">
 
               {/* LinkedIn */}
-              <a href="https://www.linkedin.com/in/fuad-al-maimun-97ba42399/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
+              <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
                 <FaLinkedin size={17} />
               </a>
 
                {/* WhatsApp */}
-              <a href="https://api.whatsapp.com/send/?phone=%2B8801300725948&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
+              <a href={SOCIALS.whatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
                 <FaWhatsapp size={17} />
               </a>
 
               {/* Email */}
-              <a href="mailto:fuadmaymun0@gmail.com" aria-label="Email" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
+              <a href={`mailto:${SITE.email}`} aria-label="Email" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
                 <Mail size={17} />
               </a>
 
               {/* Facebook */}
-              <a href="https://www.facebook.com/fuad.fuadalmaimun" aria-label="Facebook" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
+              <a href={SOCIALS.facebook} aria-label="Facebook" className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300">
                 <FaFacebook size={17} />
               </a>
-
-             
 
             </div>
 
@@ -76,7 +78,7 @@ export const Contact = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
 
           <p className="text-xs text-gray-500">
-            © {new Date().getFullYear()} Fuad Al Maimun. All rights reserved.
+            © {CURRENT_YEAR} Fuad Al Maimun. All rights reserved.
           </p>
 
           <p className="text-xs text-gray-600">
@@ -88,4 +90,4 @@ export const Contact = () => {
       </div>
     </footer>;
 };
-export default Contact;
+export default Footer;

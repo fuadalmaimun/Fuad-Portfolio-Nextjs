@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Download, FileText } from "lucide-react";
+import { X, Download } from "lucide-react";
 import { TbFileCvFilled } from "react-icons/tb";
+import { SITE } from "../data/site";
 
 export default function CVPreview() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const cvUrl = "/Fuad%20Resume.pdf";
+  const cvUrl = SITE.resume.url;
 
   // Lock background scrolling while modal is open
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function CVPreview() {
         onClick={() => setIsOpen(true)}
         className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-purple-500/30 bg-purple-950/30 px-6 py-3.5 text-sm font-medium text-purple-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/60 hover:bg-purple-600/20 hover:text-white sm:text-base"
       >
-        CV
+        Preview CV
         <TbFileCvFilled size={19} />
       </button>
 
@@ -55,7 +56,7 @@ export default function CVPreview() {
                 {/* Download Button */}
                 <a
                   href={cvUrl}
-                  download="Fuad_Al_Maimun_CV.pdf"
+                  download={SITE.resume.downloadName}
                   className="inline-flex items-center gap-1.5 rounded-full bg-purple-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-purple-500 sm:gap-2 sm:px-4 sm:text-sm"
                 >
                   <Download size={15} />
