@@ -1,5 +1,6 @@
+import JsonLd from "../src/components/JsonLd";
 import "../src/styles/globals.css";
-import "./globals.css";
+
 
 export const metadata = {
   metadataBase: new URL("https://fuad-al-maimun.vercel.app"),
@@ -14,7 +15,6 @@ export const metadata = {
 
   keywords: [
     "Fuad Al Maimun",
-    "Fuad Al Maimun Portfolio",
     "Fuad",
     "Maimun",
     "Next.js Developer",
@@ -29,8 +29,24 @@ export const metadata = {
       "Explore my portfolio, web development projects, and technical skills.",
     url: "https://fuad-al-maimun.vercel.app",
     siteName: "Fuad Al Maimun Portfolio",
+    locale: "en_US",
     type: "website",
-    images: ["/profile.png.jpeg"],
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Fuad Al Maimun - Full Stack Developer",
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Fuad Al Maimun | Full Stack Developer",
+    description:
+      "Explore my portfolio, web development projects, and technical skills.",
+    images: ["/images/og-image.png"],
   },
 
   robots: {
@@ -38,6 +54,7 @@ export const metadata = {
     follow: true,
   },
 };
+
 
 export default function RootLayout({ children }) {
   return (
@@ -52,6 +69,8 @@ export default function RootLayout({ children }) {
         <link rel="icon" type="image/jpeg" href="/images/profile.png" />
       </head>
       <body className="bg-dark-bg text-text-primary antialiased selection:bg-purple-600 selection:text-white">
+          <JsonLd />
+
         {children}
       </body>
     </html>
