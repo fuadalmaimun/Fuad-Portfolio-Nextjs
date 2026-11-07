@@ -1,18 +1,13 @@
-/**
- * Single source of truth for site-wide personal links and identity.
- * Keeping these in one place prevents drift between the hero, navbar,
- * contact section and footer.
- */
 
 export const SITE = {
   name: "Fuad Al Maimun",
-  role: "Full Stack Developer",
+  role: "Full Stack Developer, UI/UX Designer, Frontend Developer, Backend Developer",
   email: "fuadmaymun0@gmail.com",
   phone: "+880 1300 725948",
   resume: {
     // Encoded so the path works in hrefs, downloads and iframes alike.
-    url: "/Fuad%20Resume.pdf",
-    downloadName: "Fuad_Al_Maimun_Resume.pdf",
+    url: "/Fuad Al Maimun_Full Stack_ Resume.pdf",
+    downloadName: "Fuad Al Maimun_Full Stack_ Resume.pdf",
   },
 };
 

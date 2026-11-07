@@ -1,20 +1,3 @@
-/**
- * POST /api/contact
- *
- * Server-side contact form endpoint that forwards messages to EmailJS.
- * Running the integration on the server means no third-party SDK ships to
- * the browser and the EmailJS credentials stay out of the client bundle.
- *
- * Required environment variables (see .env.example):
- *   EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY
- *
- * Response contract:
- *   { ok: true }                                   -> message delivered
- *   { ok: false, code: "VALIDATION", errors }      -> 400, field errors
- *   { ok: false, code: "RATE_LIMITED" }            -> 429, slow down
- *   { ok: false, code: "NOT_CONFIGURED" }          -> 503, env vars missing
- *   { ok: false, code: "SEND_FAILED" }             -> 502, upstream failure
- */
 
 const EMAILJS_ENDPOINT = "https://api.emailjs.com/api/v1.0/email/send";
 
