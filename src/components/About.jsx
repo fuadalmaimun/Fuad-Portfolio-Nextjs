@@ -14,8 +14,22 @@ import {
   Cpu,
 } from "lucide-react";
 
-const About = () => {
+const About = ({ initialAbout = null }) => {
+  const [aboutData, setAboutData] = useState(initialAbout);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!initialAbout) {
+      fetch("/api/public/about")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((res) => {
+          if (res?.success && res?.data) {
+            setAboutData(res.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialAbout]);
 
   useEffect(() => {
     const section = document.getElementById("about");
@@ -69,18 +83,19 @@ const About = () => {
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs tracking-[0.25em] uppercase text-purple-300 mb-4 backdrop-blur-md">
             <Sparkles size={14} className="text-purple-400" />
-            <span>Get To Know Me</span>
+            <span>{aboutData?.badge || "Get To Know Me"}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-            About{" "}
+            {aboutData?.title || "About"}{" "}
             <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
-              Me
+              {aboutData?.titleHighlight || "Me"}
             </span>
           </h2>
 
           <p className="mt-4 text-sm sm:text-base text-gray-400 leading-relaxed max-w-2xl mx-auto">
-            A developer dedicated to engineering modern, responsive, and human-friendly web applications with clean code and high attention to detail.
+            {aboutData?.summary ||
+              "A developer dedicated to engineering modern, responsive, and human-friendly web applications with clean code and high attention to detail."}
           </p>
         </div>
 

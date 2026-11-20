@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { Download } from "lucide-react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
-import { SITE } from "../data/site";
+import { SOCIALS } from "../data/site";
+import MobileNavLinks from "./navbar/MobileNavLinks";
+import NavbarAuth from "./navbar/NavbarAuth";
 
 const MobileMenu = ({
   isOpen,
@@ -11,6 +12,9 @@ const MobileMenu = ({
   activeSection,
   navItems,
   onSectionClick,
+  isAdmin,
+  session,
+  onSignOut,
 }) => {
   return (
     <>
@@ -35,72 +39,27 @@ const MobileMenu = ({
         }`}
       >
         <div className="mx-auto max-w-xl">
-          {/* Navigation items */}
-          <div className="space-y-1">
-            {navItems.map((item, index) => {
-              const isActive = activeSection === item.id;
+          {/* Modular Mobile Navigation Items */}
+          <MobileNavLinks
+            navItems={navItems}
+            activeSection={activeSection}
+            isOpen={isOpen}
+            onNavClick={onSectionClick}
+          />
 
-              return (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  tabIndex={isOpen ? 0 : -1}
-                  onClick={(e) => onSectionClick(e, item.id)}
-                  className={`group flex w-full items-center justify-between rounded-xl border px-4 py-3.5 transition-all duration-200 ${
-                    isActive
-                      ? "border-purple-500/20 bg-purple-500/10 text-purple-300"
-                      : "border-transparent bg-transparent text-slate-300 hover:border-purple-500/20 hover:bg-purple-500/10 hover:text-white"
-                  }`}
-                  style={{
-                    transitionDelay: isOpen ? `${index * 30}ms` : "0ms",
-                  }}
-                >
-                  <span className="flex items-center gap-3">
-                    <span
-                      className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                        isActive
-                          ? "bg-purple-400"
-                          : "bg-slate-600 group-hover:bg-purple-400"
-                      }`}
-                    />
-
-                    <span className="text-sm font-medium">
-                      {item.label}
-                    </span>
-                  </span>
-
-                  <span
-                    className={`text-xs transition-transform duration-200 ${
-                      isActive
-                        ? "translate-x-0 text-purple-300"
-                        : "-translate-x-1 text-slate-600 group-hover:translate-x-0 group-hover:text-purple-300"
-                    }`}
-                  >
-                    →
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-
-          {/* Download Resume CTA */}
-          <a
-            href={SITE.resume.url}
-            download={SITE.resume.downloadName}
-            tabIndex={isOpen ? 0 : -1}
-            className="group mt-4 flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:brightness-110"
-          >
-            <Download
-              size={16}
-              className="transition-transform duration-300 group-hover:translate-y-0.5"
-            />
-            Download Resume
-          </a>
+          {/* Modular Auth Controls (No signin/signup link shown if unauthenticated) */}
+          <NavbarAuth
+            isAdmin={isAdmin}
+            session={session}
+            onSignOut={onSignOut}
+            isMobile={true}
+            onClose={onClose}
+          />
 
           {/* Social links */}
           <div className="mt-5 flex items-center justify-center gap-3 border-t border-white/10 pt-5">
             <a
-              href="https://github.com/fuadalmaimun"
+              href={SOCIALS.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
@@ -110,7 +69,7 @@ const MobileMenu = ({
             </a>
 
             <a
-              href="https://www.linkedin.com/in/fuad-al-maimun-97ba42399/"
+              href={SOCIALS.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -120,7 +79,7 @@ const MobileMenu = ({
             </a>
 
             <a
-              href="https://api.whatsapp.com/send/?phone=%2B8801300725948&text&type=phone_number&app_absent=0"
+              href={SOCIALS.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"

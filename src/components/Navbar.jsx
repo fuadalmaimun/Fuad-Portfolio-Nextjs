@@ -1,28 +1,44 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Download, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import MobileMenu from "./MobileMenu";
-import { SITE } from "../data/site";
+import { SOCIALS } from "../data/site";
+import { authClient } from "@/lib/auth-client";
+import { NAV_ITEMS } from "./navbar/navData";
+import NavLinks from "./navbar/NavLinks";
+import NavbarAuth from "./navbar/NavbarAuth";
 
-const NAV_ITEMS = [
-  { label: "Home", id: "home" },
-  { label: "About", id: "about" },
-  { label: "Skills", id: "skills" },
-  { label: "Projects", id: "projects" },
-  { label: "Education", id: "education" },
-  { label: "Contact", id: "contact" },
-];
+export { NAV_ITEMS };
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
 
-
-  // Scroll position and active section
+  // Highlight based on current path
   useEffect(() => {
+    if (pathname === "/about") {
+      setActiveSection("about");
+    } else if (pathname.startsWith("/projects")) {
+      setActiveSection("projects");
+    } else if (pathname === "/contact") {
+      setActiveSection("contact");
+    } else if (pathname === "/") {
+      setActiveSection("home");
+    }
+  }, [pathname]);
+
+  // Scroll position and active section for home page
+  useEffect(() => {
+    if (pathname !== "/") return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
 
@@ -41,7 +57,10 @@ const Navbar = () => {
       for (const item of NAV_ITEMS) {
         const element = document.getElementById(item.id);
 
-        if (element && element.getBoundingClientRect().top + window.scrollY <= scrollPosition) {
+        if (
+          element &&
+          element.getBoundingClientRect().top + window.scrollY <= scrollPosition
+        ) {
           currentSection = item.id;
         }
       }
@@ -57,30 +76,21 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, []);
+  }, [pathname]);
 
-  // Navigate to a section without changing the URL hash
-  const handleSectionClick = (e, sectionId) => {
-    e.preventDefault();
-
-    const section = document.getElementById(sectionId);
-
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+  // Handle section click smoothly when on "/"
+  const handleNavClick = (e, item) => {
+    if (pathname === "/" && item.href.startsWith("/#")) {
+      e.preventDefault();
+      const section = document.getElementById(item.id);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+        setActiveSection(item.id);
+      }
+      setIsMobileMenuOpen(false);
+    } else {
+      setIsMobileMenuOpen(false);
     }
-
-    // Remove #section from the URL
-    window.history.replaceState(
-      null,
-      "",
-      window.location.pathname + window.location.search
-    );
-
-    setActiveSection(sectionId);
-    setIsMobileMenuOpen(false);
   };
 
   // Close mobile menu with Escape
@@ -92,16 +102,22 @@ const Navbar = () => {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
+  const handleSignOut = async () => {
+    await authClient.signOut();
+    router.push("/");
+  };
+
+  const isAdmin = session?.user?.role === "admin";
+
   return (
     <header
       className={`fixed left-0 right-0 top-0 z-50 transition-all duration-500 ${
-        isScrolled
+        isScrolled || pathname !== "/"
           ? "bg-[#08050d]/90 shadow-lg shadow-black/10 backdrop-blur-xl"
           : "bg-transparent"
       }`}
@@ -109,7 +125,7 @@ const Navbar = () => {
       {/* Bottom border */}
       <div
         className={`absolute bottom-0 left-0 right-0 h-px transition-all duration-500 ${
-          isScrolled
+          isScrolled || pathname !== "/"
             ? "bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"
             : "bg-transparent"
         }`}
@@ -117,10 +133,9 @@ const Navbar = () => {
 
       <nav className="mx-auto flex h-[68px] max-w-7xl items-center justify-between px-4 sm:h-[76px] sm:px-8 lg:px-10">
         {/* Logo */}
-        <a
-          href="#home"
-          onClick={(e) => handleSectionClick(e, "home")}
-          aria-label="Go to home section"
+        <Link
+          href="/"
+          aria-label="Go to home"
           className="group flex shrink-0 items-center gap-3"
         >
           <div>
@@ -132,35 +147,21 @@ const Navbar = () => {
               Developer
             </p>
           </div>
-        </a>
+        </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden items-center gap-5 lg:flex xl:gap-8">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => handleSectionClick(e, item.id)}
-              className={`relative py-2 text-sm font-medium transition-colors duration-300 ${
-                activeSection === item.id
-                  ? "text-purple-300"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              {item.label}
-
-              {activeSection === item.id && (
-                <span className="absolute -bottom-0.5 left-0 h-0.5 w-full rounded-full bg-purple-400" />
-              )}
-            </a>
-          ))}
-        </div>
+        {/* Modular Desktop Navigation Links */}
+        <NavLinks
+          navItems={NAV_ITEMS}
+          activeSection={activeSection}
+          pathname={pathname}
+          onNavClick={handleNavClick}
+        />
 
         {/* Right Side */}
-        <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {/* GitHub */}
           <a
-            href="https://github.com/fuadalmaimun"
+            href={SOCIALS.github}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
@@ -171,7 +172,7 @@ const Navbar = () => {
 
           {/* LinkedIn */}
           <a
-            href="https://www.linkedin.com/in/fuad-al-maimun-97ba42399/"
+            href={SOCIALS.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
@@ -182,7 +183,7 @@ const Navbar = () => {
 
           {/* WhatsApp */}
           <a
-            href="https://api.whatsapp.com/send/?phone=%2B8801300725948&text&type=phone_number&app_absent=0"
+            href={SOCIALS.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="WhatsApp"
@@ -191,21 +192,10 @@ const Navbar = () => {
             <FaWhatsapp size={19} />
           </a>
 
-          <div className="mx-1 hidden h-5 w-px bg-white/10 sm:block" />
-
-          {/* Download Resume CTA */}
-          <a
-            href={SITE.resume.url}
-            download={SITE.resume.downloadName}
-            aria-label="Download resume (PDF)"
-            className="group hidden items-center gap-2 rounded-full border border-purple-500/40 bg-purple-500/10 px-3.5 py-2 text-xs font-semibold text-purple-200 transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-400 hover:bg-purple-600 hover:text-white hover:shadow-lg hover:shadow-purple-900/30 sm:inline-flex lg:px-4 lg:text-sm"
-          >
-            <Download
-              size={14}
-              className="transition-transform duration-300 group-hover:translate-y-0.5"
-            />
-            Resume
-          </a>
+          {/* Login entry point or authenticated controls */}
+          <div className="hidden lg:block">
+            <NavbarAuth isAdmin={isAdmin} session={session} onSignOut={handleSignOut} />
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -231,7 +221,10 @@ const Navbar = () => {
         onClose={() => setIsMobileMenuOpen(false)}
         activeSection={activeSection}
         navItems={NAV_ITEMS}
-        onSectionClick={handleSectionClick}
+        onSectionClick={handleNavClick}
+        isAdmin={isAdmin}
+        session={session}
+        onSignOut={handleSignOut}
       />
     </header>
   );

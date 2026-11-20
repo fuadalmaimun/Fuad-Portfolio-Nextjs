@@ -1,6 +1,9 @@
 {
   "version": 1,
   "functions": {
-    "/api/contact": {}
+    "/api/admin/[...path]": {},
+    "/api/contact": {},
+    "/api/public/[...path]": {},
+    "/api/upload": {}
   }
 }

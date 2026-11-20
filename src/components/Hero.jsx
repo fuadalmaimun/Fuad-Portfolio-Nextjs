@@ -15,7 +15,8 @@ const TEXTS = [
   "Building Modern Web Apps",
 ];
 
-const Hero = () => {
+const Hero = ({ initialProfile = null }) => {
+  const [profile, setProfile] = useState(initialProfile);
   const [isLoaded, setIsLoaded] = useState(false);
   const [displayText, setDisplayText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
@@ -25,11 +26,26 @@ const Hero = () => {
 
   useEffect(() => {
     setIsLoaded(true);
-  }, []);
+    if (!initialProfile) {
+      fetch("/api/public/profile")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((res) => {
+          if (res?.success && res?.data) {
+            setProfile(res.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialProfile]);
+
+  const activeTexts =
+    profile?.rotatingTexts && profile.rotatingTexts.length > 0
+      ? profile.rotatingTexts
+      : TEXTS;
 
   // Typing animation
   useEffect(() => {
-    const currentText = TEXTS[textIndex];
+    const currentText = activeTexts[textIndex % activeTexts.length] || TEXTS[0];
     let timer;
 
     if (!isDeleting && displayText === currentText) {
@@ -38,7 +54,7 @@ const Hero = () => {
       }, 1800);
     } else if (isDeleting && displayText === "") {
       setIsDeleting(false);
-      setTextIndex((prev) => (prev + 1) % TEXTS.length);
+      setTextIndex((prev) => (prev + 1) % activeTexts.length);
     } else {
       timer = setTimeout(
         () => {
@@ -53,7 +69,7 @@ const Hero = () => {
     }
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, textIndex]);
+  }, [displayText, isDeleting, textIndex, activeTexts]);
 
   // Scroll to projects
   const scrollToProjects = () => {
@@ -141,7 +157,7 @@ const Hero = () => {
               <div className="relative z-10 h-[82%] w-[82%] overflow-hidden rounded-full border border-purple-300/20 bg-gradient-to-br from-purple-950 to-[#120b1d] p-1.5 shadow-2xl shadow-purple-950/50 sm:p-2">
                 <div className="h-full w-full overflow-hidden rounded-full bg-[#100a18]">
                   <img
-                    src="/images/profile.png.jpeg"
+                    src={profile?.profileImage || "/images/profile.png.jpeg"}
                     alt="Fuad Al Maimun - Full Stack Developer"
                     className="h-full w-full object-cover object-center transition duration-700 hover:scale-105"
                   />
@@ -165,7 +181,7 @@ const Hero = () => {
               <span className="h-px w-7 shrink-0 bg-purple-500 sm:w-10" />
 
               <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-purple-300 sm:text-xs sm:tracking-[0.22em]">
-                Welcome to my portfolio
+                {profile?.welcomeBadge || "Welcome to my portfolio"}
               </span>
             </div>
 
@@ -192,29 +208,14 @@ const Hero = () => {
 
             {/* Description */}
             <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-slate-400 sm:mt-4 sm:text-base sm:leading-8 lg:mx-0 lg:mt-5">
-              I specialize in crafting high-performance, modern web
-              applications using React, Next.js, TypeScript, and clean
-              architecture.
+              {profile?.description ||
+                "I specialize in crafting high-performance, modern web applications using React, Next.js, TypeScript, and clean architecture."}
             </p>
 
             {/* Buttons */}
             <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-9 sm:flex-row sm:flex-wrap sm:gap-4 lg:justify-start">
               {/* Primary Resume CTA with shimmer sweep on hover */}
-              <a
-                href={SITE.resume.url}
-                download={SITE.resume.downloadName}
-                className="group relative inline-flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-purple-600/40 hover:brightness-110 sm:w-auto sm:px-7 sm:text-base"
-              >
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-white/25 transition-all duration-700 ease-out group-hover:left-[130%]"
-                />
-                <Download
-                  size={18}
-                  className="relative transition-transform duration-300 group-hover:translate-y-0.5"
-                />
-                <span className="relative">Download Resume</span>
-              </a>
+              
 
               <button
                 onClick={scrollToProjects}

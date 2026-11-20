@@ -5,11 +5,26 @@ import { Sparkles } from "lucide-react";
 import { projectsData } from "../data/projects";
 import ProjectCard from "./ProjectCard";
 import ProjectDetailsModal from "./ProjectDetailsModal";
+import { sortProjectsNewestFirst } from "@/lib/project-sorting";
 
-export const Projects = () => {
+export const Projects = ({ initialProjects = null }) => {
+  const [projectsList, setProjectsList] = useState(() => sortProjectsNewestFirst(initialProjects || projectsData));
   const [isVisible, setIsVisible] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (!initialProjects) {
+      fetch("/api/public/projects")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((res) => {
+          if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
+            setProjectsList(sortProjectsNewestFirst(res.data));
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialProjects]);
 
   useEffect(() => {
     const section = document.getElementById("projects");
@@ -78,7 +93,7 @@ export const Projects = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          {projectsData.map((project, index) => (
+          {projectsList.map((project, index) => (
             <ProjectCard
               key={project.id || index}
               project={project}

@@ -8,7 +8,17 @@ import { SITE } from "../data/site";
 export default function CVPreview() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const cvUrl = SITE.resume.url;
+  const [resume, setResume] = useState(SITE.resume);
+  const cvUrl = resume.url;
+
+  useEffect(() => {
+    fetch("/api/public/profile", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((result) => {
+        if (result?.data?.resumeUrl) setResume({ url: result.data.resumeUrl, downloadName: result.data.resumeDownloadName || SITE.resume.downloadName });
+      })
+      .catch(() => {});
+  }, []);
 
   // Lock background scrolling while modal is open
   useEffect(() => {
@@ -56,7 +66,7 @@ export default function CVPreview() {
                 {/* Download Button */}
                 <a
                   href={cvUrl}
-                  download={SITE.resume.downloadName}
+                  download={resume.downloadName}
                   className="inline-flex items-center gap-1.5 rounded-full bg-purple-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-purple-500 sm:gap-2 sm:px-4 sm:text-sm"
                 >
                   <Download size={15} />
@@ -77,11 +87,14 @@ export default function CVPreview() {
 
             {/* PDF Preview */}
             <div className="min-h-0 flex-1 overflow-hidden bg-[#25252b] p-1 sm:p-3">
-              <iframe
-                src={`${cvUrl}#toolbar=1&navpanes=0&view=FitH`}
-                title="Fuad Al Maimun CV Preview"
-                className="block h-full w-full rounded-lg border-0 bg-white"
-              />
+              {resume.downloadName.toLowerCase().endsWith(".pdf") ? (
+                <iframe src={`${cvUrl}#toolbar=1&navpanes=0&view=FitH`} title="Fuad Al Maimun CV Preview" className="block h-full w-full rounded-lg border-0 bg-white" />
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center gap-4 text-center text-white">
+                  <p>This CV is a Word document. Download it to view the contents.</p>
+                  <a href={cvUrl} download={resume.downloadName} className="rounded-full bg-purple-600 px-5 py-3 text-sm font-semibold">Download CV</a>
+                </div>
+              )}
             </div>
 
             {/* Footer */}

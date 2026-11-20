@@ -105,7 +105,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "C:\\Projects\\fuad-portfolio",
+    "outputFileTracingRoot": "C:\\Projects\\Fuad-Portfolio-Nextjs",
     "enablePrerenderSourceMaps": true,
     "cacheComponents": false,
     "cacheLife": {
@@ -335,13 +335,13 @@
     "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight",
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.js",
-    "repoRoot": "C:\\Projects\\fuad-portfolio",
+    "repoRoot": "C:\\Projects\\Fuad-Portfolio-Nextjs",
     "turbopack": {
-      "root": "C:\\Projects\\fuad-portfolio"
+      "root": "C:\\Projects\\Fuad-Portfolio-Nextjs"
     },
     "distDirRoot": ".next"
   },
-  "appDir": "C:\\Projects\\fuad-portfolio",
+  "appDir": "C:\\Projects\\Fuad-Portfolio-Nextjs",
   "relativeAppDir": "",
   "files": [
     ".next\\package.json",

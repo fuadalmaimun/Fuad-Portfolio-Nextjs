@@ -1,110 +1,254 @@
 export const projectsData = [
-{
-    id: "1",
-    title: "Bangla News 24",
-    category: "Full Stack News Portal",
-    description:
-      "A modern, high-performance Bangla news portal delivering real-time news updates across diverse categories with clean editorial typography and seamless reader engagement.",
-    detailedDescription:
-      "Bangla News 24 is a comprehensive digital journalism platform built to provide fast, accessible, and up-to-the-minute news coverage for millions of Bengali readers. Features curated editorial desks, categorized news feeds, trending articles, rich multimedia embeds, and responsive typography optimized for readability.",
-    technologies: [
-      "Next.js",
-      "TypeScript",
-      "Tailwind CSS",
-      "MongoDB",
-      "Better Auth",
-    ],
-    image: "/images/news.png",
-    githubUrl: "https://github.com/fuadalmaimun/bangla-news-24",
-    liveUrl: "https://bd-news-24.vercel.app",
-    role: "Full Stack Developer",
-    status: "Production Ready",
-    features: [
-      "Dynamic category filtering (National, Politics, Sports, Tech, International)",
-      "Server-side rendering (SSR) for ultra-fast load times and SEO optimization",
-      "Robust editorial authentication and article management workflow",
-      "Responsive, clean layout with high-contrast Bangla typography support",
-      "Interactive reader comments, social sharing, and trending news tickers",
-    ],
-    challenges: [
-      {
-        title: "Optimizing Server-Side Rendering & Caching",
-        detail:
-          "Balancing up-to-the-second breaking news updates with fast page load times required implementing intelligent Next.js ISR (Incremental Static Regeneration) and cache invalidation strategies.",
-      },
-      {
-        title: "Bangla Font Rendering & Typography Layouts",
-        detail:
-          "Ensuring consistent, legible rendering of complex Bengali script glyphs across various mobile devices and operating systems without causing layout shifts (CLS).",
-      },
-      {
-        title: "Secure Editorial Authentication",
-        detail:
-          "Designing role-based authentication with Better Auth to safeguard the content publishing pipeline against unauthorized access.",
-      },
-    ],
-    stateManagement: {
-      summary:
-        "A server-first architecture: Next.js App Router Server Components render article lists and pages, while client components are reserved for genuinely interactive pieces such as comments, search and the trending ticker. Category and pagination state live in the URL, making every news view shareable and cacheable.",
-      highlights: [
-        {
-          title: "URL-driven filters",
-          detail:
-            "Category and page state sync to search params, giving the UI a single source of truth and making every news view bookmarkable.",
-        },
-        {
-          title: "Incremental Static Regeneration",
-          detail:
-            "Article pages are statically generated and revalidated in the background, so breaking news appears quickly without a full rebuild.",
-        },
-        {
-          title: "Session state via Better Auth",
-          detail:
-            "Editor sessions are handled by Better Auth with httpOnly cookies — only server-side role checks gate the admin UI, never localStorage.",
-        },
-        {
-          title: "Targeted revalidation",
-          detail:
-            "Publishing or editing an article revalidates only the affected paths and tags, so the CDN never serves stale headlines.",
-        },
-      ],
+
+  {
+  id: "1",
+  title: "HireLoop",
+  category: "Full Stack Job Portal Platform",
+  description:
+    "A modern job portal platform that connects job seekers with recruiters. Users can explore job opportunities, apply for jobs, manage applications, and access premium features through a responsive interface.",
+
+  detailedDescription:
+    "HireLoop is a full-stack job portal web application built with Next.js, Express.js, and MongoDB. It provides separate experiences for job seekers, recruiters, and administrators. Job seekers can browse jobs, submit applications, and track their application status, while recruiters can manage job postings and applications. Better Auth handles authentication, and Stripe integration supports premium subscriptions.",
+
+  technologies: [
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "Express.js",
+    "MongoDB",
+    "Better Auth",
+    "Stripe",
+    "REST API",
+  ],
+
+  image: "/images/hireloopBanner.png",
+  githubUrl: "https://github.com/fuadalmaimun/hireloop-client.git",
+  backendGithubUrl: "https://github.com/fuadalmaimun/hireloop-server.git",
+  liveUrl: "https://hireloop-client-green-zeta.vercel.app",
+
+  role: "Full Stack Developer",
+  status: "Live Project",
+
+  features: [
+    "Role-based authentication for job seekers, recruiters, and admins",
+    "Browse and explore available job opportunities",
+    "View detailed job information",
+    "Apply for jobs as a job seeker",
+    "Track and manage submitted applications",
+    "Recruiters can create and manage job postings",
+    "Recruiters can manage job applications",
+    "Search and filter job listings",
+    "Application status management",
+    "Premium subscription integration using Stripe",
+    "Protected routes and role-based access control",
+    "Responsive interface for desktop and mobile devices",
+  ],
+
+  challenges: [
+    {
+      title: "Authentication and Authorization",
+      detail:
+        "Implementing Better Auth for user authentication and role-based access control to protect private routes and manage different user permissions.",
     },
-    backendArchitecture: {
-      summary:
-        "A single Next.js application on Vercel: route handlers and server actions sit directly on top of MongoDB, while Better Auth owns identity, sessions and editorial roles — no separate API server to deploy or keep in sync.",
-      highlights: [
-        {
-          title: "MongoDB collections",
-          detail:
-            "Articles, categories, users and comments are modelled as collections with indexed slug and category fields for fast lookups.",
-        },
-        {
-          title: "Route handlers & server actions",
-          detail:
-            "Public reads are served from cached route handlers; mutations run through server actions with validation before touching the database.",
-        },
-        {
-          title: "Role-based authorization",
-          detail:
-            "Better Auth issues secure sessions and enforces reader-vs-editor permissions on every privileged operation, server-side.",
-        },
-        {
-          title: "Editorial publishing pipeline",
-          detail:
-            "A draft-to-publish workflow triggers cache revalidation hooks so readers always see the latest version of a story.",
-        },
-      ],
+    {
+      title: "Job Application Management",
+      detail:
+        "Building an application management system where job seekers can apply for jobs and track their application status.",
     },
-    futurePlans: [
-      "Integrate an AI-assisted article summarizer for quick bullet-point takeaways.",
-      "Implement Web Push Notifications for urgent breaking news alerts.",
-      "Add offline bookmarking and audio news narration (Text-to-Speech) for improved accessibility.",
-      "Build a native mobile companion app using React Native.",
+    {
+      title: "Role-Based Dashboard",
+      detail:
+        "Creating separate dashboard experiences for job seekers, recruiters, and administrators based on their roles.",
+    },
+    {
+      title: "Premium Subscription Integration",
+      detail:
+        "Integrating Stripe checkout and payment verification to manage premium user subscriptions securely.",
+    },
+  ],
+
+  stateManagement: {
+    summary:
+      "Next.js manages frontend routing and interactive user interfaces, while server-side functions communicate with the Express.js backend. MongoDB stores user, job, application, and payment information.",
+
+    highlights: [
+      {
+        title: "Dynamic job data",
+        detail:
+          "Job listings and detailed job information are retrieved from the backend API and displayed dynamically.",
+      },
+      {
+        title: "Application management",
+        detail:
+          "Users can submit applications and manage their application history through dedicated dashboard features.",
+      },
+      {
+        title: "Role-based access",
+        detail:
+          "Different dashboard features and permissions are provided based on the authenticated user's role.",
+      },
+      {
+        title: "Premium user state",
+        detail:
+          "Premium subscription status is updated after successful Stripe payment verification.",
+      },
     ],
   },
 
+  backendArchitecture: {
+    summary:
+      "A standalone Express.js REST API connected to MongoDB, handling authentication-related operations, job management, applications, and Stripe payment processing.",
+
+    highlights: [
+      {
+        title: "REST API endpoints",
+        detail:
+          "Structured API endpoints handle job listings, applications, user information, and payment operations.",
+      },
+      {
+        title: "Authentication and authorization",
+        detail:
+          "Better Auth manages user authentication, while protected operations enforce role-based permissions.",
+      },
+      {
+        title: "MongoDB persistence",
+        detail:
+          "MongoDB stores user profiles, job postings, applications, and payment records.",
+      },
+      {
+        title: "Stripe payment integration",
+        detail:
+          "Stripe checkout sessions and payment verification handle premium subscription purchases.",
+      },
+      {
+        title: "Environment configuration",
+        detail:
+          "Environment variables manage database connections, authentication settings, and Stripe credentials.",
+      },
+    ],
+  },
+
+  futurePlans: [
+    "Add real-time notifications for application status updates",
+    "Implement advanced job search and filtering",
+    "Add recruiter analytics and dashboard statistics",
+    "Improve candidate and recruiter communication",
+    "Add job recommendations based on user preferences",
+  ],
+},
+
+{
+  id: "2",
+  title: "GoodTogether",
+  category: "Full Stack Event Management Platform",
+  description:
+    "A modern event management platform that helps users discover events, explore event details, join activities, and manage their created and joined events through a responsive interface.",
+  detailedDescription:
+    "GoodTogether is a full-stack event management web application built with Next.js, Express.js, and MongoDB. It allows users to explore events, create and manage their own events, and join events organized by others. JWT-based authentication and authorization help secure protected API routes and user-specific operations.",
+  technologies: [
+    "Next.js",
+    "JavaScript",
+    "Tailwind CSS",
+    "Express.js",
+    "MongoDB",
+    "JWT",
+    "REST API",
+  ],
+  image: "/images/goodTogetherBanner.png",
+  githubUrl: "https://github.com/fuadalmaimun/event-management.git",
+  liveUrl: "https://good-to-gether.vercel.app",
+  role: "Full Stack Developer",
+  status: "Live Project",
+  features: [
+    "Browse and discover available events",
+    "View detailed event information",
+    "Create and manage personal events",
+    "Join events organized by other users",
+    "View events created by the logged-in user",
+    "Manage joined events",
+    "JWT-based authentication and authorization",
+    "Express.js REST API integrated with MongoDB",
+    "Responsive interface for desktop and mobile devices",
+  ],
+  challenges: [
+    {
+      title: "Authentication and API Security",
+      detail:
+        "Implementing JWT-based authentication and authorization to protect private API routes and user-specific event operations.",
+    },
+    {
+      title: "Event Management",
+      detail:
+        "Handling event creation, updating, deletion, and dynamic event data through the Express.js backend.",
+    },
+    {
+      title: "Event Joining System",
+      detail:
+        "Managing joined event records and ensuring users can access their own joined events.",
+    },
+  ],
+  stateManagement: {
+    summary:
+      "Next.js handles the frontend routing and interactive UI, while client-side state manages event interactions. MongoDB stores event data, created events, and joined event records.",
+    highlights: [
+      {
+        title: "Dynamic event data",
+        detail:
+          "Event lists and details are retrieved from the backend API and displayed dynamically in the frontend.",
+      },
+      {
+        title: "User-specific event state",
+        detail:
+          "Users can access and manage events associated with their account.",
+      },
+      {
+        title: "JWT authentication",
+        detail:
+          "JWT-based authentication helps verify users and protect private backend operations.",
+      },
+      {
+        title: "Joined event management",
+        detail:
+          "Users can view and manage the events they have joined through dedicated backend endpoints.",
+      },
+    ],
+  },
+  backendArchitecture: {
+    summary:
+      "A standalone Express.js REST API connected to MongoDB, providing event management, user-specific operations, and secure communication with the Next.js frontend.",
+    highlights: [
+      {
+        title: "REST API endpoints",
+        detail:
+          "Event-related operations are exposed through structured JSON API endpoints.",
+      },
+      {
+        title: "JWT middleware",
+        detail:
+          "Protected routes verify user authentication before allowing private event operations.",
+      },
+      {
+        title: "MongoDB persistence",
+        detail:
+          "MongoDB stores event information, created events, and joined event records.",
+      },
+      {
+        title: "Environment configuration",
+        detail:
+          "Environment variables manage database connections and application configuration.",
+      },
+    ],
+  },
+  futurePlans: [
+    "Add event search, filtering, and sorting",
+    "Implement event reminder notifications",
+    "Add event reviews and ratings",
+    "Integrate online payment for paid events",
+  ],
+},
+
   {
-    id: "4",
+    id: "3",
     title: "Wanderlust",
     category: "Full Stack Travel & Booking Platform",
     description:
@@ -213,212 +357,318 @@ export const projectsData = [
     ],
   },
 
-  {
-    id: "2",
-    title: "Power Complaint",
-    category: "Public Utility & Service Platform",
+{
+    id: "4",
+    title: "Bangla News 24",
+    category: "Full Stack News Portal",
     description:
-      "A streamlined civic utility platform designed for citizens to report, track, and resolve electricity-related complaints with status monitoring and administrative dashboards.",
+      "A modern, high-performance Bangla news portal delivering real-time news updates across diverse categories with clean editorial typography and seamless reader engagement.",
     detailedDescription:
-      "Power Complaint simplifies the workflow between electricity consumers and service providers. Citizens can log power outages, damaged transformers, or billing discrepancies, attach supporting photos, and monitor ticket progression in real-time. Admins and field operators can assign, prioritize, and resolve issues efficiently.",
+      "Bangla News 24 is a comprehensive digital journalism platform built to provide fast, accessible, and up-to-the-minute news coverage for millions of Bengali readers. Features curated editorial desks, categorized news feeds, trending articles, rich multimedia embeds, and responsive typography optimized for readability.",
     technologies: [
       "Next.js",
       "TypeScript",
       "Tailwind CSS",
-      "React",
-      "REST API",
+      "MongoDB",
+      "Better Auth",
     ],
-    image: "/images/power.png",
-    githubUrl: "https://github.com/fuadalmaimun/power-complaints",
-    liveUrl: "https://power-complain.vercel.app/",
-    role: "Frontend & Full Stack Developer",
-    status: "Live Project",
+    image: "/images/news.png",
+    githubUrl: "https://github.com/fuadalmaimun/bangla-news-24",
+    liveUrl: "https://bd-news-24.vercel.app",
+    role: "Full Stack Developer",
+    status: "Production Ready",
     features: [
-      "Step-by-step interactive complaint submission wizard with image uploads",
-      "Real-time ticket tracking with status milestones (Pending, In Progress, Resolved)",
-      "Role-based administration dashboard for prioritizing emergency power disruptions",
-      "Automated ticket ID generation and SMS/Email notification stubs",
-      "Filter complaints by geographical zone, urgency level, and incident date",
+      "Dynamic category filtering (National, Politics, Sports, Tech, International)",
+      "Server-side rendering (SSR) for ultra-fast load times and SEO optimization",
+      "Robust editorial authentication and article management workflow",
+      "Responsive, clean layout with high-contrast Bangla typography support",
+      "Interactive reader comments, social sharing, and trending news tickers",
     ],
     challenges: [
       {
-        title: "Real-time State Sync & Ticket Tracking",
+        title: "Optimizing Server-Side Rendering & Caching",
         detail:
-          "Ensuring users immediately observe status updates without manually refreshing the browser. Designed optimistic UI updates and polling mechanisms.",
+          "Balancing up-to-the-second breaking news updates with fast page load times required implementing intelligent Next.js ISR (Incremental Static Regeneration) and cache invalidation strategies.",
       },
       {
-        title: "Handling Complex Form Validation & File Uploads",
+        title: "Bangla Font Rendering & Typography Layouts",
         detail:
-          "Validating multi-step user submissions with geographic coordinates and incident photos while keeping the form lightweight for low-bandwidth mobile connections.",
+          "Ensuring consistent, legible rendering of complex Bengali script glyphs across various mobile devices and operating systems without causing layout shifts (CLS).",
       },
       {
-        title: "Admin Dashboard Performance with Large Datasets",
+        title: "Secure Editorial Authentication",
         detail:
-          "Filtering and categorizing high volumes of complaint entries without UI lag using client-side memoization and paginated queries.",
+          "Designing role-based authentication with Better Auth to safeguard the content publishing pipeline against unauthorized access.",
       },
     ],
     stateManagement: {
       summary:
-        "The complaint wizard is driven by a single useReducer that owns the current step, form data and validation errors, making the multi-step flow predictable and easy to reset. Ticket status uses optimistic updates plus polling so users see progress without refreshing.",
+        "A server-first architecture: Next.js App Router Server Components render article lists and pages, while client components are reserved for genuinely interactive pieces such as comments, search and the trending ticker. Category and pagination state live in the URL, making every news view shareable and cacheable.",
       highlights: [
         {
-          title: "useReducer-driven wizard",
+          title: "URL-driven filters",
           detail:
-            "Step navigation, field values and per-step validation errors all dispatch to one reducer — no tangled useState chains.",
+            "Category and page state sync to search params, giving the UI a single source of truth and making every news view bookmarkable.",
         },
         {
-          title: "Optimistic ticket tracking",
+          title: "Incremental Static Regeneration",
           detail:
-            "Status milestones update immediately in the UI and reconcile with the server on the next poll, eliminating manual refreshes.",
+            "Article pages are statically generated and revalidated in the background, so breaking news appears quickly without a full rebuild.",
         },
         {
-          title: "Memoized dashboard filtering",
+          title: "Session state via Better Auth",
           detail:
-            "Zone, urgency and date filters run through useMemo so large ticket lists re-render without frame drops.",
+            "Editor sessions are handled by Better Auth with httpOnly cookies — only server-side role checks gate the admin UI, never localStorage.",
         },
         {
-          title: "Controlled upload state",
+          title: "Targeted revalidation",
           detail:
-            "Photo previews and progress are tracked per field, keeping the form responsive even on low-bandwidth mobile connections.",
+            "Publishing or editing an article revalidates only the affected paths and tags, so the CDN never serves stale headlines.",
         },
       ],
     },
     backendArchitecture: {
       summary:
-        "A REST API layer manages the full ticket lifecycle with role-based access for citizens and administrators, automated ticket ID generation, and paginated queries that keep dashboards fast as complaint volume grows.",
+        "A single Next.js application on Vercel: route handlers and server actions sit directly on top of MongoDB, while Better Auth owns identity, sessions and editorial roles — no separate API server to deploy or keep in sync.",
       highlights: [
         {
-          title: "Ticket lifecycle endpoints",
+          title: "MongoDB collections",
           detail:
-            "Create, read and transition-status endpoints enforce the Pending → In Progress → Resolved state machine on the server.",
+            "Articles, categories, users and comments are modelled as collections with indexed slug and category fields for fast lookups.",
+        },
+        {
+          title: "Route handlers & server actions",
+          detail:
+            "Public reads are served from cached route handlers; mutations run through server actions with validation before touching the database.",
         },
         {
           title: "Role-based authorization",
           detail:
-            "Admin dashboards and triage actions are gated by role checks; citizens can only read their own tickets.",
+            "Better Auth issues secure sessions and enforces reader-vs-editor permissions on every privileged operation, server-side.",
         },
         {
-          title: "Evidence photo uploads",
+          title: "Editorial publishing pipeline",
           detail:
-            "Incident photos are accepted with size and type validation and stored separately from ticket metadata.",
-        },
-        {
-          title: "Paginated, indexed queries",
-          detail:
-            "Admin listings paginate and filter by zone and date so dashboards stay responsive as data accumulates.",
+            "A draft-to-publish workflow triggers cache revalidation hooks so readers always see the latest version of a story.",
         },
       ],
     },
     futurePlans: [
-      "Integrate interactive GIS mapping (Leaflet/Mapbox) to visualize outage clusters on city maps.",
-      "Add automated SMS alert triggers upon each stage of complaint resolution.",
-      "Develop an automated AI triage system to detect duplicate complaint reports in the same neighborhood.",
+      "Integrate an AI-assisted article summarizer for quick bullet-point takeaways.",
+      "Implement Web Push Notifications for urgent breaking news alerts.",
+      "Add offline bookmarking and audio news narration (Text-to-Speech) for improved accessibility.",
+      "Build a native mobile companion app using React Native.",
     ],
   },
 
-  {
-    id: "3",
-    title: "Urban Vibe E-Commerce",
-    category: "Modern E-Commerce Solution",
-    description:
-      "A full-featured e-commerce platform offering modern product discovery, interactive cart & checkout systems, user authentication, and responsive shopping experiences.",
-    detailedDescription:
-      "Urban Vibe is a sleek, customer-centric retail web application crafted for effortless browsing and high conversion rates. Features lightning-fast product filtering by price and category, persistent shopping bag management, customer account authentication, and secure mock checkout flows.",
-    technologies: [
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Context API",
-      "React Router",
-    ],
-    image: "/images/e-commarce.png",
-    githubUrl: "https://github.com/fuadalmaimun/my-E-commarce-web",
-    liveUrl: "https://device-store-fuad.netlify.app/",
-    role: "Frontend Developer",
-    status: "Live Demo",
-    features: [
-      "Dynamic product catalog with multi-facet filters (category, price range, rating)",
-      "Persistent shopping cart with local storage synchronization and quantity adjustment",
-      "User authentication with profile management and order history simulation",
-      "Interactive product zoom, multi-image gallery preview, and stock alerts",
-      "Mobile-optimized one-thumb checkout flow with coupon code validation",
-    ],
-    challenges: [
-      {
-        title: "Complex Cart State & LocalStorage Synchronization",
-        detail:
-          "Preventing race conditions between multiple tabs and handling cart item mutations seamlessly with React Context and localStorage persistence.",
-      },
-      {
-        title: "Instant Multi-Filter Performance",
-        detail:
-          "Debouncing user search input and calculating composite price/category filters on client without frame drops or re-render lag.",
-      },
-      {
-        title: "Responsive Checkout UI on Small Viewports",
-        detail:
-          "Designing a sticky cart drawer and summary breakdown that remains accessible and clutter-free on small mobile screens.",
-      },
-    ],
-    stateManagement: {
-      summary:
-        "Cart and session state live in React Context backed by useReducer, with a persistence layer that writes through to localStorage and re-hydrates across browser tabs. Search and filter values are treated as derived state, never duplicated copies.",
-      highlights: [
-        {
-          title: "Context + useReducer cart",
-          detail:
-            "Add, remove and quantity changes dispatch to one reducer, so totals and item counts are always derived — never drift out of sync.",
-        },
-        {
-          title: "Cross-tab persistence",
-          detail:
-            "Cart state serializes to localStorage on every change and re-hydrates from storage events, keeping multiple tabs consistent.",
-        },
-        {
-          title: "Debounced derived filters",
-          detail:
-            "Search input is debounced and fed into memoized price/category filtering, avoiding re-render storms while typing.",
-        },
-        {
-          title: "Router-driven navigation",
-          detail:
-            "React Router carries product and category state in the URL, so deep links restore the exact browsing context.",
-        },
-      ],
-    },
-    backendArchitecture: {
-      summary:
-        "A deliberately frontend-only build with a typed service layer that abstracts the product catalog, cart and checkout behind swappable adapters — mock data today, a real API tomorrow, without touching UI code.",
-      highlights: [
-        {
-          title: "Service-layer abstraction",
-          detail:
-            "All catalog, cart and order reads go through one data module — components never call fetch or localStorage directly.",
-        },
-        {
-          title: "Adapter-ready checkout",
-          detail:
-            "Order submission runs through an adapter interface designed for Stripe or SSLCommerz to drop in later.",
-        },
-        {
-          title: "Versioned local persistence",
-          detail:
-            "localStorage acts as the temporary store with versioned keys, so schema changes can't crash returning visitors.",
-        },
-        {
-          title: "API-shaped contracts",
-          detail:
-            "Types mirror a REST shape (entities, lists, errors), which makes wiring a real backend a drop-in change.",
-        },
-      ],
-    },
-    futurePlans: [
-      "Integrate Stripe & SSLCommerz payment gateways for live transactional processing.",
-      "Add customer product reviews with photo uploads and verified buyer badges.",
-      "Implement a wishlist feature with price drop notification emails.",
-      "Build a vendor management portal for inventory tracking.",
-    ],
-  },
+  
+
+  // {
+  //   id: "2",
+  //   title: "Power Complaint",
+  //   category: "Public Utility & Service Platform",
+  //   description:
+  //     "A streamlined civic utility platform designed for citizens to report, track, and resolve electricity-related complaints with status monitoring and administrative dashboards.",
+  //   detailedDescription:
+  //     "Power Complaint simplifies the workflow between electricity consumers and service providers. Citizens can log power outages, damaged transformers, or billing discrepancies, attach supporting photos, and monitor ticket progression in real-time. Admins and field operators can assign, prioritize, and resolve issues efficiently.",
+  //   technologies: [
+  //     "Next.js",
+  //     "TypeScript",
+  //     "Tailwind CSS",
+  //     "React",
+  //     "REST API",
+  //   ],
+  //   image: "/images/power.png",
+  //   githubUrl: "https://github.com/fuadalmaimun/power-complaints",
+  //   liveUrl: "https://power-complain.vercel.app/",
+  //   role: "Frontend & Full Stack Developer",
+  //   status: "Live Project",
+  //   features: [
+  //     "Step-by-step interactive complaint submission wizard with image uploads",
+  //     "Real-time ticket tracking with status milestones (Pending, In Progress, Resolved)",
+  //     "Role-based administration dashboard for prioritizing emergency power disruptions",
+  //     "Automated ticket ID generation and SMS/Email notification stubs",
+  //     "Filter complaints by geographical zone, urgency level, and incident date",
+  //   ],
+  //   challenges: [
+  //     {
+  //       title: "Real-time State Sync & Ticket Tracking",
+  //       detail:
+  //         "Ensuring users immediately observe status updates without manually refreshing the browser. Designed optimistic UI updates and polling mechanisms.",
+  //     },
+  //     {
+  //       title: "Handling Complex Form Validation & File Uploads",
+  //       detail:
+  //         "Validating multi-step user submissions with geographic coordinates and incident photos while keeping the form lightweight for low-bandwidth mobile connections.",
+  //     },
+  //     {
+  //       title: "Admin Dashboard Performance with Large Datasets",
+  //       detail:
+  //         "Filtering and categorizing high volumes of complaint entries without UI lag using client-side memoization and paginated queries.",
+  //     },
+  //   ],
+  //   stateManagement: {
+  //     summary:
+  //       "The complaint wizard is driven by a single useReducer that owns the current step, form data and validation errors, making the multi-step flow predictable and easy to reset. Ticket status uses optimistic updates plus polling so users see progress without refreshing.",
+  //     highlights: [
+  //       {
+  //         title: "useReducer-driven wizard",
+  //         detail:
+  //           "Step navigation, field values and per-step validation errors all dispatch to one reducer — no tangled useState chains.",
+  //       },
+  //       {
+  //         title: "Optimistic ticket tracking",
+  //         detail:
+  //           "Status milestones update immediately in the UI and reconcile with the server on the next poll, eliminating manual refreshes.",
+  //       },
+  //       {
+  //         title: "Memoized dashboard filtering",
+  //         detail:
+  //           "Zone, urgency and date filters run through useMemo so large ticket lists re-render without frame drops.",
+  //       },
+  //       {
+  //         title: "Controlled upload state",
+  //         detail:
+  //           "Photo previews and progress are tracked per field, keeping the form responsive even on low-bandwidth mobile connections.",
+  //       },
+  //     ],
+  //   },
+  //   backendArchitecture: {
+  //     summary:
+  //       "A REST API layer manages the full ticket lifecycle with role-based access for citizens and administrators, automated ticket ID generation, and paginated queries that keep dashboards fast as complaint volume grows.",
+  //     highlights: [
+  //       {
+  //         title: "Ticket lifecycle endpoints",
+  //         detail:
+  //           "Create, read and transition-status endpoints enforce the Pending → In Progress → Resolved state machine on the server.",
+  //       },
+  //       {
+  //         title: "Role-based authorization",
+  //         detail:
+  //           "Admin dashboards and triage actions are gated by role checks; citizens can only read their own tickets.",
+  //       },
+  //       {
+  //         title: "Evidence photo uploads",
+  //         detail:
+  //           "Incident photos are accepted with size and type validation and stored separately from ticket metadata.",
+  //       },
+  //       {
+  //         title: "Paginated, indexed queries",
+  //         detail:
+  //           "Admin listings paginate and filter by zone and date so dashboards stay responsive as data accumulates.",
+  //       },
+  //     ],
+  //   },
+  //   futurePlans: [
+  //     "Integrate interactive GIS mapping (Leaflet/Mapbox) to visualize outage clusters on city maps.",
+  //     "Add automated SMS alert triggers upon each stage of complaint resolution.",
+  //     "Develop an automated AI triage system to detect duplicate complaint reports in the same neighborhood.",
+  //   ],
+  // },
+
+  // {
+  //   id: "3",
+  //   title: "Urban Vibe E-Commerce",
+  //   category: "Modern E-Commerce Solution",
+  //   description:
+  //     "A full-featured e-commerce platform offering modern product discovery, interactive cart & checkout systems, user authentication, and responsive shopping experiences.",
+  //   detailedDescription:
+  //     "Urban Vibe is a sleek, customer-centric retail web application crafted for effortless browsing and high conversion rates. Features lightning-fast product filtering by price and category, persistent shopping bag management, customer account authentication, and secure mock checkout flows.",
+  //   technologies: [
+  //     "React",
+  //     "TypeScript",
+  //     "Tailwind CSS",
+  //     "Context API",
+  //     "React Router",
+  //   ],
+  //   image: "/images/e-commarce.png",
+  //   githubUrl: "https://github.com/fuadalmaimun/my-E-commarce-web",
+  //   liveUrl: "https://device-store-fuad.netlify.app/",
+  //   role: "Frontend Developer",
+  //   status: "Live Demo",
+  //   features: [
+  //     "Dynamic product catalog with multi-facet filters (category, price range, rating)",
+  //     "Persistent shopping cart with local storage synchronization and quantity adjustment",
+  //     "User authentication with profile management and order history simulation",
+  //     "Interactive product zoom, multi-image gallery preview, and stock alerts",
+  //     "Mobile-optimized one-thumb checkout flow with coupon code validation",
+  //   ],
+  //   challenges: [
+  //     {
+  //       title: "Complex Cart State & LocalStorage Synchronization",
+  //       detail:
+  //         "Preventing race conditions between multiple tabs and handling cart item mutations seamlessly with React Context and localStorage persistence.",
+  //     },
+  //     {
+  //       title: "Instant Multi-Filter Performance",
+  //       detail:
+  //         "Debouncing user search input and calculating composite price/category filters on client without frame drops or re-render lag.",
+  //     },
+  //     {
+  //       title: "Responsive Checkout UI on Small Viewports",
+  //       detail:
+  //         "Designing a sticky cart drawer and summary breakdown that remains accessible and clutter-free on small mobile screens.",
+  //     },
+  //   ],
+  //   stateManagement: {
+  //     summary:
+  //       "Cart and session state live in React Context backed by useReducer, with a persistence layer that writes through to localStorage and re-hydrates across browser tabs. Search and filter values are treated as derived state, never duplicated copies.",
+  //     highlights: [
+  //       {
+  //         title: "Context + useReducer cart",
+  //         detail:
+  //           "Add, remove and quantity changes dispatch to one reducer, so totals and item counts are always derived — never drift out of sync.",
+  //       },
+  //       {
+  //         title: "Cross-tab persistence",
+  //         detail:
+  //           "Cart state serializes to localStorage on every change and re-hydrates from storage events, keeping multiple tabs consistent.",
+  //       },
+  //       {
+  //         title: "Debounced derived filters",
+  //         detail:
+  //           "Search input is debounced and fed into memoized price/category filtering, avoiding re-render storms while typing.",
+  //       },
+  //       {
+  //         title: "Router-driven navigation",
+  //         detail:
+  //           "React Router carries product and category state in the URL, so deep links restore the exact browsing context.",
+  //       },
+  //     ],
+  //   },
+  //   backendArchitecture: {
+  //     summary:
+  //       "A deliberately frontend-only build with a typed service layer that abstracts the product catalog, cart and checkout behind swappable adapters — mock data today, a real API tomorrow, without touching UI code.",
+  //     highlights: [
+  //       {
+  //         title: "Service-layer abstraction",
+  //         detail:
+  //           "All catalog, cart and order reads go through one data module — components never call fetch or localStorage directly.",
+  //       },
+  //       {
+  //         title: "Adapter-ready checkout",
+  //         detail:
+  //           "Order submission runs through an adapter interface designed for Stripe or SSLCommerz to drop in later.",
+  //       },
+  //       {
+  //         title: "Versioned local persistence",
+  //         detail:
+  //           "localStorage acts as the temporary store with versioned keys, so schema changes can't crash returning visitors.",
+  //       },
+  //       {
+  //         title: "API-shaped contracts",
+  //         detail:
+  //           "Types mirror a REST shape (entities, lists, errors), which makes wiring a real backend a drop-in change.",
+  //       },
+  //     ],
+  //   },
+  //   futurePlans: [
+  //     "Integrate Stripe & SSLCommerz payment gateways for live transactional processing.",
+  //     "Add customer product reviews with photo uploads and verified buyer badges.",
+  //     "Implement a wishlist feature with price drop notification emails.",
+  //     "Build a vendor management portal for inventory tracking.",
+  //   ],
+  // },
 ];
 export const getProjectById = (id) => projectsData.find((p) => p.id === id);
 

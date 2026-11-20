@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
-import Skills from "./components/Skills";
+import SkillsSection from "./components/SkillsSection";
 import Projects from "./components/Projects";
 import Education from "./components/Education";
 import Contact from "./components/Contact";
@@ -16,7 +16,7 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        <Skills />
+        <SkillsSection />
         <Projects />
         <Education />
         <Contact />
@@ -25,4 +25,5 @@ export default function Home() {
       <Footer />
     </div>
   );
+  
 }

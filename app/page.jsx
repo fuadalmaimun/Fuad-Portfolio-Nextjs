@@ -3,7 +3,7 @@
 import Navbar from '../src/components/Navbar';
 import Hero from '../src/components/Hero';
 import About from '../src/components/About';
-import Skills from '../src/components/Skills';
+import SkillsSection from '../src/components/SkillsSection';
 import Projects from '../src/components/Projects';
 import Education from '../src/components/Education';
 import Contact from '../src/components/Contact';
@@ -16,7 +16,7 @@ export default function Page() {
       <main>
         <Hero />
         <About />
-        <Skills />
+        <SkillsSection />
         <Projects />
         <Education />
         <Contact />

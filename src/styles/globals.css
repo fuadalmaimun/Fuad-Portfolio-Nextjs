@@ -99,6 +99,18 @@ body {
   background-image: linear-gradient(to right, #9333ea, #c026d3);
 }
 
+/* Bring the admin controls' smallest labels and values up to readable sizes. */
+.admin-dashboard .text-xs { font-size: 0.875rem; line-height: 1.35rem; }
+.admin-dashboard .text-\[10px\] { font-size: 0.75rem; line-height: 1rem; }
+.admin-dashboard .text-\[11px\] { font-size: 0.75rem; line-height: 1rem; }
+.admin-dashboard .dashboard-nav-scrollbar { scrollbar-width: none; }
+.admin-dashboard .dashboard-nav-scrollbar::-webkit-scrollbar { display: none; }
+.admin-dashboard input.text-xs,
+.admin-dashboard textarea.text-xs,
+.admin-dashboard select.text-xs { font-size: 1rem; line-height: 1.5rem; }
+.admin-dashboard input:not([type="checkbox"]):not([type="radio"]),
+.admin-dashboard select { min-height: 2.75rem; }
+
 /* Button base styles */
 .btn-base {
   padding: 0.75rem 1.5rem;
@@ -471,6 +483,62 @@ select:disabled {
 }
 
 /* ==========================================================================
+   Skills showcase (skill nodes -> orb with orbit rings)
+   ========================================================================== */
+@keyframes skill-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes skill-line-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes skill-orb-pulse {
+  0%,
+  100% {
+    opacity: 0.78;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.skill-node {
+  animation: skill-float 3s ease-in-out infinite;
+}
+
+.connector-line {
+  animation: skill-line-glow 3s ease-in-out infinite;
+}
+
+.glow-layer {
+  animation: skill-orb-pulse 4.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-node,
+  .connector-line,
+  .glow-layer {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
    Contact form fields
    These rules intentionally live outside the Tailwind layers so they take
    precedence over the base input styles defined earlier in this file and can
@@ -510,4 +578,15 @@ select:disabled {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Hide Chrome's built-in password manager icons */
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden !important;
+  display: none !important;
+  pointer-events: none !important;
+}
+
+input::-webkit-caps-lock-indicator {
+  display: none !important;
 }

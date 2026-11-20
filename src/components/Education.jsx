@@ -12,8 +12,22 @@ import {
 } from "lucide-react";
 import { educationData } from "../data/education";
 
-const Education = () => {
+const Education = ({ initialEducation = null }) => {
+  const [eduList, setEduList] = useState(initialEducation || educationData);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!initialEducation) {
+      fetch("/api/public/education")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((res) => {
+          if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
+            setEduList(res.data);
+          }
+        })
+        .catch(() => {});
+    }
+  }, [initialEducation]);
 
   useEffect(() => {
     const section = document.getElementById("education");
@@ -103,7 +117,7 @@ const Education = () => {
           <div className="absolute bottom-6 left-8 top-6 hidden w-px bg-gradient-to-b from-purple-500/40 via-fuchsia-500/30 to-purple-900/10 md:block" />
 
           <div className="space-y-8">
-            {educationData.map((item, index) => (
+            {eduList.map((item, index) => (
               <div
                 key={item.id}
                 className={`relative transition-all duration-700 ease-out ${isVisible

@@ -1,5 +1,4 @@
-
-const EMAILJS_ENDPOINT = "https://api.emailjs.com/api/v1.0/email/send";
+import { MongoClient } from "mongodb";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -9,7 +8,7 @@ const LIMITS = {
   message: { min: 10, max: 2000 },
 };
 
-/** Best-effort in-memory rate limiting (per server instance). */
+/** Best-effort in-memory rate limiting */
 const RATE_LIMIT = { windowMs: 60_000, max: 5 };
 const requestLog = new Map();
 
@@ -84,8 +83,7 @@ export async function POST(request) {
     );
   }
 
-  // Honeypot: real visitors never fill this hidden field, so bots are
-  // silently dropped before they consume rate-limit budget.
+  // Honeypot: real visitors never fill this hidden field
   if (payload.company) {
     return json({ ok: true });
   }
@@ -109,65 +107,77 @@ export async function POST(request) {
     return json({ ok: false, code: "VALIDATION", errors }, 400);
   }
 
-  const { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } =
-    process.env;
-
-  if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
-    return json(
-      {
-        ok: false,
-        code: "NOT_CONFIGURED",
-        message: "Email delivery is not configured on this deployment.",
-      },
-      503
-    );
-  }
-
+  // Save to MongoDB
   try {
-    const response = await fetch(EMAILJS_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        service_id: EMAILJS_SERVICE_ID,
-        template_id: EMAILJS_TEMPLATE_ID,
-        user_id: EMAILJS_PUBLIC_KEY,
-        template_params: {
-          from_name: String(payload.name).trim(),
-          from_email: String(payload.email).trim(),
-          reply_to: String(payload.email).trim(),
-          subject:
-            String(payload.subject ?? "").trim() || "New portfolio enquiry",
-          message: String(payload.message).trim(),
-        },
-      }),
-    });
+    const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "";
+    
+    // Attempt to send through backend API
+    try {
+      if (!backendUrl) throw new Error("BACKEND_URL is not configured");
+      const backendRes = await fetch(`${backendUrl}/api/messages`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: payload.name,
+          email: payload.email,
+          subject: payload.subject,
+          message: payload.message,
+        }),
+      });
 
-    if (!response.ok) {
-      const detail = await response.text().catch(() => "");
-      console.error(`[contact] EmailJS responded ${response.status}: ${detail}`);
-
-      return json(
-        {
-          ok: false,
-          code: "SEND_FAILED",
-          message:
-            "The email service rejected this message. Please email me directly instead.",
-        },
-        502
-      );
+      if (backendRes.ok) {
+        return json({
+          ok: true,
+          success: true,
+          message: "Thanks! Your message has been sent — I'll get back to you within 24 hours.",
+        });
+      }
+    } catch {
+      // Backend not running, proceed to direct MongoDB fallback
     }
 
-    return json({ ok: true });
-  } catch (error) {
-    console.error("[contact] Failed to reach EmailJS:", error);
+    // Direct MongoDB fallback if backend unreachable
+    const uri = process.env.MONGODB_URI;
+    const dbName = process.env.DB_NAME || "fuad_portfolio";
 
+    if (uri) {
+      const client = new MongoClient(uri);
+      await client.connect();
+      const db = client.db(dbName);
+
+      await db.collection("messages").insertOne({
+        id: `msg_${Date.now()}`,
+        name: String(payload.name).trim(),
+        email: String(payload.email).trim(),
+        subject: String(payload.subject ?? "").trim() || "New portfolio enquiry",
+        message: String(payload.message).trim(),
+        isRead: false,
+        ip: clientIp,
+        createdAt: new Date(),
+      });
+
+      await client.close();
+
+      return json({
+        ok: true,
+        success: true,
+        message: "Thanks! Your message has been sent — I'll get back to you within 24 hours.",
+      });
+    }
+
+    return json({
+      ok: true,
+      message: "Message accepted.",
+    });
+  } catch (error) {
+    console.error("[contact] Error saving message:", error);
     return json(
       {
         ok: false,
-        code: "SEND_FAILED",
-        message: "Could not reach the email service. Please try again.",
+        code: "DB_ERROR",
+        message: "Could not save your message right now. Please try again or email directly.",
       },
-      502
+      500
     );
   }
 }

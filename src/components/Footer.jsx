@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import { FaFacebook, FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { Mail } from "lucide-react";
 import { SITE, SOCIALS } from "../data/site";
@@ -6,6 +8,23 @@ import { SITE, SOCIALS } from "../data/site";
 const CURRENT_YEAR = new Date().getFullYear();
 
 export const Footer = () => {
+  const [socials, setSocials] = useState(SOCIALS);
+  const [email, setEmail] = useState(SITE.email);
+
+  useEffect(() => {
+    fetch("/api/public/settings")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((res) => {
+        if (res?.success && res?.data?.socials) {
+          setSocials({ ...SOCIALS, ...res.data.socials });
+        }
+        if (res?.success && res?.data?.socials?.email) {
+          setEmail(res.data.socials.email);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <footer
       id="footer"
@@ -44,7 +63,7 @@ export const Footer = () => {
             <div className="flex items-center gap-3">
               {/* LinkedIn */}
               <a
-                href={SOCIALS.linkedin}
+                href={socials.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -55,7 +74,7 @@ export const Footer = () => {
 
               {/* WhatsApp */}
               <a
-                href={SOCIALS.whatsapp}
+                href={socials.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
@@ -66,7 +85,7 @@ export const Footer = () => {
 
               {/* Email */}
               <a
-                href={`mailto:${SITE.email}`}
+                href={`mailto:${email}`}
                 aria-label="Email"
                 className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300"
               >
@@ -75,14 +94,20 @@ export const Footer = () => {
 
               {/* Facebook */}
               <a
-                href={SOCIALS.facebook}
+                href={socials.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
                 className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300"
               >
                 <FaFacebook size={17} />
               </a>
+
+              {/* GitHub */}
               <a
-                href={SOCIALS.github}
+                href={socials.github}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="GitHub"
                 className="p-2.5 rounded-full border border-white/10 bg-white/5 text-gray-400 hover:text-white hover:bg-purple-600/20 hover:border-purple-500/30 transition-all duration-300"
               >
@@ -109,4 +134,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
 export default Footer;

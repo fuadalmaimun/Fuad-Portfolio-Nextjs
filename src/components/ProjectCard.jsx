@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { ExternalLink, Globe, Info } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 
@@ -20,8 +21,8 @@ export default function ProjectCard({ project, index = 0, onViewDetails }) {
       }`}
     >
       {/* Project Image */}
-      <div
-        onClick={() => onViewDetails?.(project)}
+      <Link
+        href={`/projects/${project.id}`}
         className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#10091c] shadow-2xl cursor-pointer"
       >
         <div className="aspect-[16/10] overflow-hidden">
@@ -51,7 +52,7 @@ export default function ProjectCard({ project, index = 0, onViewDetails }) {
             Open case study
           </span>
         </div>
-      </div>
+      </Link>
 
       {/* Project Information */}
       <div className="relative flex flex-col">
@@ -62,12 +63,11 @@ export default function ProjectCard({ project, index = 0, onViewDetails }) {
           </span>
         </div>
 
-        <h3
-          onClick={() => onViewDetails?.(project)}
-          className="mb-4 text-2xl font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-purple-200 sm:text-3xl lg:text-4xl cursor-pointer"
-        >
-          {project.title}
-        </h3>
+        <Link href={`/projects/${project.id}`}>
+          <h3 className="mb-4 text-2xl font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-purple-200 sm:text-3xl lg:text-4xl cursor-pointer">
+            {project.title}
+          </h3>
+        </Link>
 
         <p className="mb-6 text-sm leading-7 text-gray-400 sm:text-base">
           {project.description}
@@ -90,13 +90,13 @@ export default function ProjectCard({ project, index = 0, onViewDetails }) {
         {/* Project Actions */}
         <div className="flex flex-wrap items-center gap-3">
           {/* View Details Primary Action */}
-          <button
-            onClick={() => onViewDetails?.(project)}
+          <Link
+            href={`/projects/${project.id}`}
             className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-950/40 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-purple-600/30 hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400"
           >
             <Info size={17} />
             View Case Study
-          </button>
+          </Link>
 
           {/* Live Demo */}
           {hasLiveDemo && (
