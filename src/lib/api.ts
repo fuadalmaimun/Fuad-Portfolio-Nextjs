@@ -3,7 +3,7 @@ import { projectsData } from "../data/projects";
 import { getAllSkills } from "../data/skills";
 import { experiences } from "../data/experience";
 import { educationData } from "../data/education";
-import { sortProjectsNewestFirst } from "@/lib/project-sorting";
+import { sortProjectsByDisplayOrder } from "@/lib/project-sorting";
 
 const BACKEND_URL =
   process.env.BACKEND_URL ||
@@ -116,12 +116,12 @@ export async function fetchProjects() {
     }).then((r) => (r.ok ? r.json() : null));
 
     if (res?.success && Array.isArray(res?.data) && res.data.length > 0) {
-      return sortProjectsNewestFirst(res.data);
+      return sortProjectsByDisplayOrder(res.data);
     }
   } catch {
     // fallback
   }
-  return sortProjectsNewestFirst(projectsData);
+  return sortProjectsByDisplayOrder(projectsData);
 }
 
 export async function fetchProjectById(id: string) {

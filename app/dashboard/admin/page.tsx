@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import ImageUploadField from "@/components/admin/ImageUploadField";
-import { sortProjectsNewestFirst } from "@/lib/project-sorting";
+import { sortProjectsByDisplayOrder } from "@/lib/project-sorting";
 import { SHOWCASE_SKILLS } from "@/data/showcase-skills";
 
 export default function AdminDashboardPage() {
@@ -70,6 +70,10 @@ export default function AdminDashboardPage() {
 
   // Authorized Admin Check
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+
+  // Next free display number for a newly created project.
+  const nextProjectOrder = () =>
+    projects.reduce((max, project) => Math.max(max, Number(project.order) || 0), 0) + 1;
 
   useEffect(() => {
     async function verifyAdmin() {
@@ -130,7 +134,7 @@ export default function AdminDashboardPage() {
 
       if (pRes?.data) setProfile(pRes.data);
       if (aRes?.data) setAbout(aRes.data);
-      if (projRes?.data) setProjects(sortProjectsNewestFirst(projRes.data));
+      if (projRes?.data) setProjects(sortProjectsByDisplayOrder(projRes.data));
       if (skRes?.data) setSkills(skRes.data);
       if (expRes?.data) setExperiences(expRes.data);
       if (eduRes?.data) setEducation(eduRes.data);
@@ -227,7 +231,12 @@ export default function AdminDashboardPage() {
     const endpoint = isEdit ? `/api/projects/${editingProject.id}` : `/api/projects`;
     const method = isEdit ? "PUT" : "POST";
 
-    const projectPayload = isEdit ? editingProject : { ...editingProject, createdAt: new Date().toISOString() };
+    const parsedOrder = Number(editingProject.order);
+    const projectOrder =
+      Number.isFinite(parsedOrder) && parsedOrder > 0 ? parsedOrder : nextProjectOrder();
+    const projectPayload = isEdit
+      ? { ...editingProject, order: projectOrder }
+      : { ...editingProject, order: projectOrder, createdAt: new Date().toISOString() };
     const res = await callAdminApi(endpoint, method, projectPayload);
     setSaving(false);
     if (res.success) {
@@ -663,7 +672,7 @@ export default function AdminDashboardPage() {
                         status: "Live Project",
                         features: [],
                         challenges: [],
-                        order: projects.length + 1,
+                        order: nextProjectOrder(),
                       });
                       setActiveTab("projects");
                     }}
@@ -974,7 +983,7 @@ export default function AdminDashboardPage() {
                       status: "Live Project",
                       features: [],
                       challenges: [],
-                      order: projects.length + 1,
+                      order: nextProjectOrder(),
                     })
                   }
                   className="inline-flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-semibold text-white hover:bg-purple-500"
@@ -1059,6 +1068,29 @@ export default function AdminDashboardPage() {
                           onChange={(e) => setEditingProject({ ...editingProject, title: e.target.value })}
                           className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2 text-xs text-white outline-none focus:border-purple-400"
                         />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold uppercase text-purple-300 mb-1">
+                          Project Number (Display Order)
+                        </label>
+                        <input
+                          type="number"
+                          min={1}
+                          step={1}
+                          placeholder="e.g. 1"
+                          value={editingProject.order ?? ""}
+                          onChange={(e) =>
+                            setEditingProject({
+                              ...editingProject,
+                              order: e.target.value === "" ? "" : Number(e.target.value),
+                            })
+                          }
+                          className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2 text-xs text-white outline-none focus:border-purple-400"
+                        />
+                        <p className="mt-1 text-[11px] text-gray-400">
+                          Lower numbers appear first on the portfolio.
+                        </p>
                       </div>
 
                       <div>

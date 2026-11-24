@@ -5,10 +5,10 @@ import { Sparkles } from "lucide-react";
 import { projectsData } from "../data/projects";
 import ProjectCard from "./ProjectCard";
 import ProjectDetailsModal from "./ProjectDetailsModal";
-import { sortProjectsNewestFirst } from "@/lib/project-sorting";
+import { sortProjectsByDisplayOrder } from "@/lib/project-sorting";
 
 export const Projects = ({ initialProjects = null }) => {
-  const [projectsList, setProjectsList] = useState(() => sortProjectsNewestFirst(initialProjects || projectsData));
+  const [projectsList, setProjectsList] = useState(() => sortProjectsByDisplayOrder(initialProjects || projectsData));
   const [isVisible, setIsVisible] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +19,7 @@ export const Projects = ({ initialProjects = null }) => {
         .then((r) => (r.ok ? r.json() : null))
         .then((res) => {
           if (res?.success && Array.isArray(res.data) && res.data.length > 0) {
-            setProjectsList(sortProjectsNewestFirst(res.data));
+            setProjectsList(sortProjectsByDisplayOrder(res.data));
           }
         })
         .catch(() => {});

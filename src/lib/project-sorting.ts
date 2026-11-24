@@ -6,6 +6,10 @@ type ProjectWithDate = {
   id?: string | number;
 };
 
+type ProjectWithOrder = ProjectWithDate & {
+  order?: number | string | null;
+};
+
 function projectTimestamp(project: ProjectWithDate): number {
   const value = project.createdAt ?? project.created_at ?? project.creationDate;
   if (value) {
@@ -19,6 +23,23 @@ function projectTimestamp(project: ProjectWithDate): number {
   return 0;
 }
 
+function projectNumber(project: ProjectWithOrder): number {
+  const raw = project.order;
+  if (raw === undefined || raw === null || raw === "") return Number.MAX_SAFE_INTEGER;
+  const parsed = typeof raw === "number" ? raw : Number.parseFloat(raw);
+  return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
+}
+
 export function sortProjectsNewestFirst<T extends ProjectWithDate>(projects: T[]): T[] {
   return [...projects].sort((a, b) => projectTimestamp(b) - projectTimestamp(a));
+}
+
+/** Sort projects by their dashboard "project number", keeping unnumbered ones last. */
+export function sortProjectsByDisplayOrder<T extends ProjectWithOrder>(projects: T[]): T[] {
+  return [...projects].sort((a, b) => {
+    const orderA = projectNumber(a);
+    const orderB = projectNumber(b);
+    if (orderA !== orderB) return orderA - orderB;
+    return projectTimestamp(b) - projectTimestamp(a);
+  });
 }
