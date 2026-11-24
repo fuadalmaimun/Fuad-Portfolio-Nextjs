@@ -234,9 +234,22 @@ export default function AdminDashboardPage() {
     const parsedOrder = Number(editingProject.order);
     const projectOrder =
       Number.isFinite(parsedOrder) && parsedOrder > 0 ? parsedOrder : nextProjectOrder();
-    const projectPayload = isEdit
-      ? { ...editingProject, order: projectOrder }
-      : { ...editingProject, order: projectOrder, createdAt: new Date().toISOString() };
+    const { technologiesText, ...projectFields } = editingProject;
+    const technologiesSource =
+      typeof technologiesText === "string"
+        ? technologiesText
+        : Array.isArray(projectFields.technologies)
+          ? projectFields.technologies.join(", ")
+          : "";
+    const projectPayload = {
+      ...projectFields,
+      technologies: technologiesSource
+        .split(",")
+        .map((tech: string) => tech.trim())
+        .filter(Boolean),
+      order: projectOrder,
+      ...(isEdit ? {} : { createdAt: new Date().toISOString() }),
+    };
     const res = await callAdminApi(endpoint, method, projectPayload);
     setSaving(false);
     if (res.success) {
@@ -664,6 +677,7 @@ export default function AdminDashboardPage() {
                         description: "",
                         detailedDescription: "",
                         technologies: ["React", "Next.js", "TypeScript", "Tailwind CSS"],
+                        technologiesText: "React, Next.js, TypeScript, Tailwind CSS",
                         image: "",
                         githubUrl: "",
                         backendGithubUrl: "",
@@ -975,6 +989,7 @@ export default function AdminDashboardPage() {
                       description: "",
                       detailedDescription: "",
                       technologies: [],
+                      technologiesText: "",
                       image: "",
                       githubUrl: "",
                       backendGithubUrl: "",
@@ -1024,7 +1039,14 @@ export default function AdminDashboardPage() {
                         <ExternalLink size={14} />
                       </Link>
                       <button
-                        onClick={() => setEditingProject({ ...proj })}
+                        onClick={() =>
+                          setEditingProject({
+                            ...proj,
+                            technologiesText: Array.isArray(proj.technologies)
+                              ? proj.technologies.join(", ")
+                              : "",
+                          })
+                        }
                         className="rounded-xl border border-purple-500/30 bg-purple-950/40 p-2 text-purple-300 hover:text-white"
                         title="Edit Project"
                       >
@@ -1168,13 +1190,19 @@ export default function AdminDashboardPage() {
                         </label>
                         <input
                           type="text"
-                          value={Array.isArray(editingProject.technologies) ? editingProject.technologies.join(", ") : ""}
+                          value={
+                            editingProject.technologiesText ??
+                            (Array.isArray(editingProject.technologies)
+                              ? editingProject.technologies.join(", ")
+                              : "")
+                          }
                           onChange={(e) =>
                             setEditingProject({
                               ...editingProject,
-                              technologies: e.target.value.split(",").map((s) => s.trim()).filter(Boolean),
+                              technologiesText: e.target.value,
                             })
                           }
+                          placeholder="React.js, Next.js, Tailwind CSS"
                           className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2 text-xs text-white outline-none focus:border-purple-400"
                         />
                       </div>

@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { Sparkles } from 'lucide-react';
 import { SHOWCASE_SKILLS } from '../data/showcase-skills';
 
 // Real SVG Brand Icons to match the image 100%
@@ -138,34 +139,24 @@ export default function SkillsSection() {
       {/* Main Content Container */}
       <div className="relative z-10 w-full max-w-[1140px] mx-auto flex flex-col items-center">
         
-        {/* Top Badge: </> My Skills */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111428]/90 border border-indigo-500/30 text-xs font-medium text-indigo-300 shadow-[0_0_20px_rgba(99,102,241,0.2)] mb-5">
-          <span className="text-purple-400 font-bold">&lt;/&gt;</span>
-          <span>My Skills</span>
+        {/* Section Header — matches the Projects section banner */}
+        <div className="text-center max-w-3xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs tracking-[0.25em] uppercase text-purple-300 mb-4 backdrop-blur-md">
+            <Sparkles size={14} className="text-purple-400" />
+            <span>My Expertise</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+            Skills &amp;{' '}
+            <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
+              Technologies
+            </span>
+          </h2>
+
+          <p className="mt-4 text-sm sm:text-base text-gray-400 leading-relaxed max-w-xl mx-auto">
+            The tools I use to build modern, scalable and user-friendly web applications.
+          </p>
         </div>
-
-        {/* Main Heading */}
-        <h2 className="text-4xl sm:text-5xl md:text-[54px] font-extrabold tracking-tight text-center leading-tight">
-          Skills &amp;{' '}
-          <span className="relative inline-block bg-gradient-to-r from-[#A855F7] via-[#6366F1] to-[#38BDF8] bg-clip-text text-transparent">
-            Technologies
-            {/* Brush Stroke Underline */}
-            <svg className="w-full h-3 -mt-1 text-purple-500" viewBox="0 0 260 12" fill="none">
-              <path d="M4 9C65 3 190 2 256 7" stroke="url(#paint_line)" strokeWidth="4" strokeLinecap="round" />
-              <defs>
-                <linearGradient id="paint_line" x1="0" y1="0" x2="260" y2="0">
-                  <stop stopColor="#A855F7" />
-                  <stop offset="1" stopColor="#3B82F6" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </span>
-        </h2>
-
-        {/* Subtitle */}
-        <p className="text-gray-400 text-sm sm:text-base text-center max-w-xl mt-3 mb-9">
-          The tools I use to build modern, scalable and user-friendly web applications.
-        </p>
 
         {/* Filter Pills */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
