@@ -13,8 +13,8 @@ export const SITE = {
 
 export const SOCIALS = {
   github: "https://github.com/fuadalmaimun",
-  linkedin: "https://www.linkedin.com/in/fuad-al-maimun-97ba42399/",
+  linkedin: "https://www.linkedin.com/in/fuad-al-maimun",
   whatsapp:
     "https://api.whatsapp.com/send/?phone=%2B8801300725948&text&type=phone_number&app_absent=0",
-  facebook: "https://www.facebook.com/fuad.fuadalmaimun",
+  facebook: "https://www.facebook.com/fuadalmaimun1",
 };

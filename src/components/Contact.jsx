@@ -14,6 +14,7 @@ import {
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { SITE, SOCIALS } from "../data/site";
 
+
 const INITIAL_FORM = {
   name: "",
   email: "",
