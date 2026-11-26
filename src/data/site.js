@@ -1,4 +1,3 @@
-
 export const SITE = {
   name: "Fuad Al Maimun",
   role: "Full Stack Developer, UI/UX Designer, Frontend Developer, Backend Developer",
