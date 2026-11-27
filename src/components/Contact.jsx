@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import {
   AlertCircle,
+  ArrowUpRight,
   CheckCircle2,
   Clock,
   Loader2,
@@ -248,13 +249,13 @@ export default function Contact() {
 
       <div className="container-safe relative z-10 max-w-6xl">
         {/* Section Header */}
-        <div className="mx-auto mb-12 max-w-2xl text-center sm:mb-16">
+        <div className="scroll-reveal mx-auto mb-12 max-w-2xl text-center sm:mb-16">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-950/40 px-3.5 py-1.5 text-xs tracking-[0.25em] text-purple-300 uppercase backdrop-blur-md">
             <Sparkles size={14} className="text-purple-400" />
             <span>Get In Touch</span>
           </div>
 
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
             Let&apos;s{" "}
             <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
               Work Together
@@ -267,7 +268,7 @@ export default function Contact() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
+        <div className="scroll-reveal grid grid-cols-1 gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-10">
           {/* Left Column: Direct Channels */}
           <div className="flex flex-col gap-3.5">
             {CHANNELS.map(({ label, value, href, icon: Icon }) => (
@@ -276,13 +277,13 @@ export default function Contact() {
                 href={href}
                 target={href.startsWith("mailto:") ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="group flex items-center gap-4 rounded-2xl border border-purple-500/20 bg-[#0d071b]/70 p-4 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-400/50 hover:bg-[#120824] sm:p-5"
+                className="group relative flex items-center gap-4 rounded-2xl border border-purple-500/20 bg-[#0d071b]/70 p-4 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-400/50 hover:bg-[#120824] hover:shadow-lg hover:shadow-purple-950/50 sm:p-5"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-purple-400/30 bg-purple-900/30 text-purple-300 transition-all duration-300 group-hover:border-purple-400/60 group-hover:bg-purple-600/30 group-hover:text-white">
                   <Icon size={19} />
                 </span>
 
-                <span className="min-w-0">
+                <span className="min-w-0 flex-1">
                   <span className="block text-xs font-semibold tracking-wider text-purple-400 uppercase">
                     {label}
                   </span>
@@ -290,6 +291,11 @@ export default function Contact() {
                     {value}
                   </span>
                 </span>
+
+                <ArrowUpRight
+                  size={16}
+                  className="shrink-0 text-purple-400/0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-purple-300"
+                />
               </a>
             ))}
 

@@ -32,6 +32,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -301,6 +302,26 @@ body {
 
 .animate-modal-scale {
   animation: modalScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   Scroll-linked reveal (progressive enhancement)
+   Browsers without view-timeline support simply render the content normally.
+   ========================================================================== */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-reveal {
+      animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 6% cover 28%;
+    }
+
+    .scroll-reveal-soft {
+      animation: fadeIn 1s ease-out both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
 }
 
 /* Responsive utilities */

@@ -86,7 +86,7 @@ const About = ({ initialAbout = null }) => {
             <span>{aboutData?.badge || "Get To Know Me"}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
             {aboutData?.title || "About"}{" "}
             <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
               {aboutData?.titleHighlight || "Me"}
@@ -103,7 +103,7 @@ const About = ({ initialAbout = null }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
           {/* 1. Programming Journey */}
           <div
-            className={`relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-7 backdrop-blur-xl shadow-xl hover:border-purple-500/40 transition-all duration-500 group ${
+            className={`relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-7 backdrop-blur-xl shadow-xl transition-all duration-500 group hover:-translate-y-1 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-950/60 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: "150ms" }}
@@ -136,7 +136,7 @@ const About = ({ initialAbout = null }) => {
 
           {/* 2. Preferred Type of Work */}
           <div
-            className={`relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-7 backdrop-blur-xl shadow-xl hover:border-purple-500/40 transition-all duration-500 group ${
+            className={`relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-7 backdrop-blur-xl shadow-xl transition-all duration-500 group hover:-translate-y-1 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-950/60 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: "300ms" }}
@@ -184,7 +184,7 @@ const About = ({ initialAbout = null }) => {
 
           {/* 3. Personal Hobbies & Interests */}
           <div
-            className={`relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-7 backdrop-blur-xl shadow-xl hover:border-purple-500/40 transition-all duration-500 group ${
+            className={`relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-7 backdrop-blur-xl shadow-xl transition-all duration-500 group hover:-translate-y-1 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-950/60 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
             style={{ transitionDelay: "450ms" }}
@@ -240,7 +240,7 @@ const About = ({ initialAbout = null }) => {
           {strengths.map((item, index) => (
             <div
               key={index}
-              className="p-4 rounded-xl bg-purple-950/20 border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300"
+              className="rounded-xl border border-purple-500/10 bg-purple-950/20 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-500/30 hover:bg-purple-950/30"
             >
               <div className="flex items-center gap-2 mb-1.5 text-purple-300 font-semibold text-sm">
                 <CheckCircle2 size={16} className="text-purple-400" />

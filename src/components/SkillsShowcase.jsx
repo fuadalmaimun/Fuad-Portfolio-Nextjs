@@ -140,13 +140,13 @@ export default function SkillsSection() {
       <div className="relative z-10 w-full max-w-[1140px] mx-auto flex flex-col items-center">
         
         {/* Section Header — matches the Projects section banner */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
+        <div className="scroll-reveal text-center max-w-3xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs tracking-[0.25em] uppercase text-purple-300 mb-4 backdrop-blur-md">
             <Sparkles size={14} className="text-purple-400" />
             <span>My Expertise</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          <h2 className="text-balance text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
             Skills &amp;{' '}
             <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
               Technologies
@@ -180,7 +180,7 @@ export default function SkillsSection() {
         </div>
 
         {/* Cards Layout */}
-        <div className="w-full space-y-6">
+        <div className="scroll-reveal w-full space-y-6">
           
           {/* Top Row: Frontend & Backend Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -219,9 +219,11 @@ export default function SkillsSection() {
                     {skillsFor('frontend').map((skill) => (
                       <div
                         key={skill.id || skill._id || skill.name}
-                        className="flex flex-col items-center justify-center gap-2.5 py-4 px-2 rounded-2xl bg-[#14182E]/90 border border-white/[0.07] hover:border-purple-400/40 hover:-translate-y-1 transition-all duration-300"
+                        className="group flex flex-col items-center justify-center gap-2.5 py-4 px-2 rounded-2xl bg-[#14182E]/90 border border-white/[0.07] hover:border-purple-400/40 hover:bg-[#181d36] hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-950/40 transition-all duration-300"
                       >
-                        {renderSkillIcon(skill)}
+                        <div className="transition-transform duration-300 group-hover:scale-110">
+                          {renderSkillIcon(skill)}
+                        </div>
                         <span className="text-[11px] font-medium text-gray-200 text-center">{skill.name}</span>
                       </div>
                     ))}
@@ -265,9 +267,9 @@ export default function SkillsSection() {
                     {skillsFor('backend').map((skill) => (
                       <div
                         key={skill.id || skill._id || skill.name}
-                        className="flex flex-col items-center justify-center gap-2.5 py-4 px-2 rounded-2xl bg-[#121B29]/90 border border-white/[0.07] hover:border-emerald-400/40 hover:-translate-y-1 transition-all duration-300"
+                        className="group flex flex-col items-center justify-center gap-2.5 py-4 px-2 rounded-2xl bg-[#121B29]/90 border border-white/[0.07] hover:border-emerald-400/40 hover:bg-[#152233] hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-950/40 transition-all duration-300"
                       >
-                        <div className="h-8 flex items-center justify-center">
+                        <div className="h-8 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                           {renderSkillIcon(skill)}
                         </div>
                         <span className="text-[11px] font-medium text-gray-200 text-center">{skill.name}</span>
@@ -308,9 +310,9 @@ export default function SkillsSection() {
                     {skills.filter((skill) => ['database', 'tools'].includes(skill.category?.toLowerCase()) && (activeTab === 'All Skills' || skill.category?.toLowerCase() === activeTab.toLowerCase())).map((skill) => (
                       <div
                         key={skill.id || skill._id || `${skill.category}-${skill.name}`}
-                        className="flex flex-col items-center justify-center gap-2.5 py-3.5 px-2 rounded-2xl bg-[#14172B]/90 border border-white/[0.07] hover:border-amber-400/40 hover:-translate-y-1 transition-all duration-300"
+                        className="group flex flex-col items-center justify-center gap-2.5 py-3.5 px-2 rounded-2xl bg-[#14172B]/90 border border-white/[0.07] hover:border-amber-400/40 hover:bg-[#1a1a33] hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-950/40 transition-all duration-300"
                       >
-                        <div className="h-8 flex items-center justify-center">
+                        <div className="h-8 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                           {renderSkillIcon(skill)}
                         </div>
                         <span className="text-[11px] font-medium text-gray-200 text-center whitespace-nowrap">

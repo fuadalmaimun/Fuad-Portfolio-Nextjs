@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Sparkles } from "lucide-react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 import { projectsData } from "../data/projects";
 import ProjectCard from "./ProjectCard";
 import ProjectDetailsModal from "./ProjectDetailsModal";
@@ -73,7 +73,7 @@ export const Projects = ({ initialProjects = null }) => {
             <span>Featured Portfolio</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
             Recent{" "}
             <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
               Projects
@@ -120,9 +120,13 @@ export const Projects = ({ initialProjects = null }) => {
             href="https://github.com/fuadalmaimun"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-7 py-3 rounded-full bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/40 text-purple-200 text-sm font-medium transition-all duration-300 hover:scale-105 shadow-lg shadow-purple-950/40"
+            className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 to-fuchsia-600 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-900/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-purple-600/40 hover:brightness-110"
           >
             Visit My GitHub Profile
+            <ArrowUpRight
+              size={17}
+              className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
           </a>
         </div>
       </div>

@@ -42,10 +42,13 @@ export default function CVPreview() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="group inline-flex items-center justify-center gap-2.5 rounded-full border border-purple-500/30 bg-purple-950/30 px-6 py-3.5 text-sm font-medium text-purple-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/60 hover:bg-purple-600/20 hover:text-white sm:text-base"
+        className="group inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-purple-500/30 bg-purple-950/30 px-7 py-3.5 text-sm font-semibold text-purple-200 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-purple-400/60 hover:bg-purple-600/20 hover:text-white hover:shadow-[0_16px_40px_-20px_rgba(168,85,247,0.9)] sm:w-auto sm:px-8 sm:text-base"
       >
         Preview CV
-        <TbFileCvFilled size={19} />
+        <TbFileCvFilled
+          size={19}
+          className="transition-transform duration-300 group-hover:scale-110"
+        />
       </button>
 
       {/* CV Preview Modal */}

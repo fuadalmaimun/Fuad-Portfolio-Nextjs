@@ -103,7 +103,7 @@ const Education = ({ initialEducation = null }) => {
             <span>Academic Background</span>
           </div>
 
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl">
             Educational{" "}
             <span className="bg-gradient-to-r from-purple-300 via-fuchsia-400 to-violet-500 bg-clip-text text-transparent">
               Qualification
@@ -132,7 +132,7 @@ const Education = ({ initialEducation = null }) => {
                 </div>
 
                 {/* Education Card */}
-                <div className="group relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-5 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-purple-400/40 sm:p-8 md:ml-20">
+                <div className="group relative rounded-2xl border border-purple-500/20 bg-[#0d071b]/80 p-5 shadow-xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-purple-400/40 hover:shadow-2xl hover:shadow-purple-950/60 sm:p-8 md:ml-20">
                   {/* Top Gradient Line */}
                   <div
                     className={`absolute inset-x-0 top-0 h-px rounded-t-2xl bg-gradient-to-r ${getBorderGradient(

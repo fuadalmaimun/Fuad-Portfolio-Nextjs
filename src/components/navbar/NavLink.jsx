@@ -11,15 +11,17 @@ const NavLink = ({ item, isActive, onClick }) => {
     <Link
       href={item.href}
       onClick={(e) => onClick?.(e, item)}
-      className={`relative py-2 text-sm font-medium transition-colors duration-300 ${
+      className={`group relative py-2 text-sm font-medium transition-colors duration-300 ${
         isActive ? "text-purple-300" : "text-slate-400 hover:text-white"
       }`}
     >
       {item.label}
 
-      {isActive && (
-        <span className="absolute -bottom-0.5 left-0 h-0.5 w-full rounded-full bg-purple-400" />
-      )}
+      <span
+        className={`absolute -bottom-0.5 left-0 h-0.5 rounded-full bg-gradient-to-r from-purple-400 to-fuchsia-400 transition-all duration-300 ${
+          isActive ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
+        }`}
+      />
     </Link>
   );
 };
