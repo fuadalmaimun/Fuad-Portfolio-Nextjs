@@ -18,31 +18,23 @@ const NavbarAuth = ({
   onClose,
 }) => {
   if (!session?.user) {
-    if (isMobile) {
-      return (
-        <div className="mt-4 border-t border-white/10 pt-4">
-          <Link
-            href="/login?redirect=/dashboard/admin"
-            onClick={onClose}
-            className="inline-flex items-center gap-2 rounded-xl border border-purple-500/40 bg-purple-950/40 px-4 py-2.5 text-xs font-semibold text-purple-200 transition hover:border-purple-400 hover:bg-purple-600/30"
-          >
-            <User size={14} />
-            <span>Login</span>
-          </Link>
-        </div>
-      );
-    }
-
-    // Desktop: icon-only admin entry point
-    return (
+    // Icon-only admin entry point (same in desktop navbar and mobile menu)
+    const loginLink = (
       <Link
         href="/login?redirect=/dashboard/admin"
+        onClick={onClose}
         title="Admin login"
         aria-label="Admin login"
         className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-purple-500/40 bg-purple-950/40 text-purple-200 transition hover:border-purple-400 hover:bg-purple-600/30"
       >
         <Shield size={16} className="text-purple-400" />
       </Link>
+    );
+
+    return isMobile ? (
+      <div className="mt-4 border-t border-white/10 pt-4">{loginLink}</div>
+    ) : (
+      loginLink
     );
   }
 
