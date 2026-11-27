@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowUpRight, Download, Mail } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import ScrollSequence from "./ScrollSequence";
-import { FRAME_SEQUENCES } from "../data/frames";
 import CVPreview from "@/components/CVPreview";
 import { SITE } from "../data/site";
 
@@ -21,8 +19,6 @@ const Hero = ({ initialProfile = null }) => {
   const [displayText, setDisplayText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const scrollHintRef = useRef(null);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -88,48 +84,13 @@ const Hero = ({ initialProfile = null }) => {
     }
   };
 
-  // Scroll hint animation
-  const handleProgress = (progress) => {
-    if (scrollHintRef.current) {
-      scrollHintRef.current.style.opacity = String(
-        Math.max(0, 1 - progress * 14)
-      );
-    }
-  };
-
   const isName = textIndex === 0;
 
   return (
-    <ScrollSequence
+    <section
       id="home"
-      basePath={FRAME_SEQUENCES.about.basePath}
-      count={FRAME_SEQUENCES.about.count}
-      scrollLength="300vh"
-      className="overflow-x-clip bg-[#08050d] text-white"
-      wrapperClassName="bg-[#08050d] text-white"
-      overlayClassName="bg-gradient-to-r from-[#08050d] via-[#08050d]/85 to-[#08050d]/40"
-      canvasFilter="saturate(1.4) contrast(1.05) brightness(1.05)"
-      onProgress={handleProgress}
+      className="relative overflow-x-clip text-white"
     >
-      {/* Background Glow */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 top-1/4 h-56 w-56 rounded-full bg-purple-700/20 blur-[90px] sm:h-80 sm:w-80 lg:h-[480px] lg:w-[480px]" />
-
-        <div className="absolute -right-20 top-10 h-60 w-60 rounded-full bg-violet-600/20 blur-[100px] sm:h-80 sm:w-80 lg:h-[520px] lg:w-[520px]" />
-
-        <div className="absolute bottom-[-10%] left-1/3 h-56 w-56 rounded-full bg-fuchsia-600/10 blur-[100px] sm:h-80 sm:w-80" />
-
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize:
-              "clamp(32px, 5vw, 64px) clamp(32px, 5vw, 64px)",
-          }}
-        />
-      </div>
-
       {/* Main Content */}
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl items-center px-4 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28 md:px-8 lg:px-12 lg:py-20">
         <div className="grid w-full grid-cols-1 items-center gap-6 sm:gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10 xl:gap-16">
@@ -272,12 +233,7 @@ const Hero = ({ initialProfile = null }) => {
         </div>
       </div>
 
-      {/* Scroll Hint */}
-      <div
-        ref={scrollHintRef}
-        className="pointer-events-none absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-slate-600 sm:flex"
-      />
-    </ScrollSequence>
+    </section>
   );
 };
 

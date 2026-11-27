@@ -176,6 +176,16 @@ body {
   padding-block: 4rem;
 }
 
+/* ==========================================================================
+   Home page scroll-driven background
+   The shared frame-sequence canvas sits behind the whole home page, so each
+   top-level section lets it show through while keeping its own content.
+   ========================================================================== */
+.home-scroll-bg section,
+.home-scroll-bg footer {
+  background-color: transparent;
+}
+
 @media (min-width: 640px) {
   .section {
     padding-block: 5rem;

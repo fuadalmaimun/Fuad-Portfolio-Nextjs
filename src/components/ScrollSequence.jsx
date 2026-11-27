@@ -33,7 +33,10 @@ const ScrollSequence = ({
   const [isSmall, setIsSmall] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  const pinned = !isSmall && !reducedMotion;
+  // Background mode always pins the stage to the viewport so the canvas stays
+  // screen-sized, even on mobile where the wrapper mode scrubs unpinned.
+  const isBackground = pinMode === "background";
+  const pinned = isBackground ? true : !isSmall && !reducedMotion;
 
   /* ---------------- drawing ---------------- */
 
